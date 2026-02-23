@@ -1,17 +1,29 @@
+/* Profile Page Styles */
 .profile-container {
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 16px;
 }
 
+/* Profile Header Card */
 .profile-header-card {
   margin-bottom: 20px;
+  background: #ffffff !important;
+  --background: #ffffff !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.profile-header-card ion-card-content {
+  padding: 24px;
 }
 
 .profile-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 24px;
+  text-align: center;
 }
 
 .profile-avatar-section {
@@ -19,13 +31,22 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  margin-bottom: 16px;
 }
 
 .profile-avatar-large {
-  width: 120px;
-  height: 120px;
-  border: 4px solid var(--ion-color-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 110px;
+  height: 110px;
+  border: 4px solid #4285f4;
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.3);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .avatar-placeholder-large {
@@ -34,147 +55,188 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-size: 48px;
+  background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%);
+  font-size: 44px;
   font-weight: 700;
   color: white;
 }
 
 .change-photo-btn {
-  --padding-start: 12px;
-  --padding-end: 12px;
-  height: 32px;
+  --background: #4285f4;
+  --color: white;
+  --border-radius: 20px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  height: 36px;
   font-size: 12px;
+  font-weight: 600;
 }
 
 .profile-header-info {
-  flex: 1;
+  margin-top: 8px;
 }
 
 .profile-header-info h2 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
-  margin: 0 0 8px 0;
-  color: var(--ion-color-dark);
+  margin: 0 0 10px 0;
+  color: #1a1a2e !important;
 }
 
 .profile-header-info ion-badge {
   font-size: 12px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   text-transform: uppercase;
+  border-radius: 16px;
+  font-weight: 600;
 }
 
 .profile-meta {
-  font-size: 14px;
-  color: var(--ion-color-medium);
-  margin: 8px 0 0 0;
+  font-size: 13px;
+  color: #666 !important;
+  margin: 10px 0 0 0;
+}
+
+/* Form Cards */
+ion-card {
+  background: #ffffff !important;
+  --background: #ffffff !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 0 0 16px 0;
+}
+
+ion-card ion-card-content {
+  padding: 20px;
 }
 
 .form-section {
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 .form-section h3 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
-  margin: 0 0 16px 0;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--ion-color-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a2e !important;
+  margin: 0 0 18px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #4285f4;
+}
+
+.form-section h3 ion-icon {
+  font-size: 20px;
+  color: #4285f4;
 }
 
 .form-field {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .field-label {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--ion-color-dark);
+  color: #333 !important;
   margin-bottom: 8px;
 }
 
 .field-label ion-icon {
-  font-size: 18px;
-  color: var(--ion-color-primary);
+  font-size: 16px;
+  color: #4285f4;
 }
 
+/* Input Items */
 .input-item {
-  --border-width: 2px;
-  --border-color: #d0d0d0;
-  --border-radius: 8px;
+  --border-width: 1px;
+  --border-color: #e0e0e0;
+  --border-radius: 10px;
   --padding-start: 14px;
   --padding-end: 14px;
-  --min-height: 42px;
-  --background: #f5f5f5 !important;
-  --color: #000000 !important;
-  background: #f5f5f5 !important;
-  border: 2px solid #d0d0d0;
-  border-radius: 8px;
+  --min-height: 44px;
+  --background: #f8f9fa !important;
+  --color: #1a1a2e !important;
+  background: #f8f9fa !important;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
   transition: all 0.2s ease;
+  height: 44px;
 }
 
 .input-item ion-input {
-  --color: #000000 !important;
-  color: #000000 !important;
+  --color: #1a1a2e !important;
+  color: #1a1a2e !important;
+  font-size: 14px;
 }
 
 .input-item ion-input input {
-  color: #000000 !important;
+  color: #1a1a2e !important;
 }
 
 .input-item ion-textarea {
-  --color: #000000 !important;
-  color: #000000 !important;
-}
-
-.input-item ion-textarea textarea {
-  color: #000000 !important;
+  --color: #1a1a2e !important;
+  color: #1a1a2e !important;
+  font-size: 14px;
 }
 
 .input-item:focus-within {
-  --border-color: var(--ion-color-primary);
-  border-color: var(--ion-color-primary);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.15);
 }
 
 .input-item.error {
-  --border-color: var(--ion-color-danger);
-  border-color: var(--ion-color-danger);
+  border-color: #ea4335;
+}
+
+/* Textarea specific */
+.input-item.textarea-item {
+  height: auto;
+  min-height: 90px;
 }
 
 .error-message {
   display: block;
   font-size: 12px;
-  color: var(--ion-color-danger);
+  color: #ea4335;
   margin-top: 6px;
   font-weight: 500;
 }
 
 .helper-text {
   display: block;
-  font-size: 12px;
-  color: #666;
+  font-size: 11px;
+  color: #888;
   margin-top: 6px;
 }
 
+/* Save Button */
 .save-button {
-  margin-top: 24px;
+  --background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%);
+  --color: white;
+  --border-radius: 10px;
+  margin-top: 20px;
   height: 48px;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.35);
 }
 
+.save-button:hover {
+  --background: linear-gradient(135deg, #3b78e7 0%, #4285f4 100%);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .profile-container {
     padding: 12px;
   }
 
-  .profile-header {
-    flex-direction: column;
-    text-align: center;
+  .profile-header-card ion-card-content {
+    padding: 20px;
   }
 
   .profile-avatar-large {
@@ -187,10 +249,53 @@
   }
 
   .profile-header-info h2 {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .form-section h3 {
     font-size: 16px;
+  }
+
+  .input-item {
+    height: 42px;
+    --min-height: 42px;
+  }
+}
+
+/* Dark Mode - Keep forms white */
+@media (prefers-color-scheme: dark) {
+
+  .profile-header-card,
+  ion-card {
+    background: #ffffff !important;
+    --background: #ffffff !important;
+  }
+
+  .profile-header-info h2,
+  .form-section h3 {
+    color: #1a1a2e !important;
+  }
+
+  .profile-meta {
+    color: #666 !important;
+  }
+
+  .field-label {
+    color: #333 !important;
+  }
+
+  .input-item {
+    --background: #f8f9fa !important;
+    background: #f8f9fa !important;
+  }
+
+  .input-item ion-input,
+  .input-item ion-textarea {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+  }
+
+  .helper-text {
+    color: #888 !important;
   }
 }

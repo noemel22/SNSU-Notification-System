@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
+// @ts-ignore
 import { body, validationResult } from 'express-validator';
 import { Op } from 'sequelize';
 
@@ -104,7 +105,7 @@ export const login = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).userId;
-    
+
     if (userId) {
       await User.update(
         { onlineStatus: false, lastActive: new Date() },

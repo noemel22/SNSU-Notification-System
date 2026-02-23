@@ -12,12 +12,10 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonIcon,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonBadge,
   IonRefresher,
-  IonRefresherContent
+  IonRefresherContent,
+  IonSkeletonText
 } from '@ionic/react';
 import {
   peopleOutline,
@@ -31,6 +29,7 @@ import {
 } from 'ionicons/icons';
 import { userService, notificationService, messageService } from '../services/api';
 import Sidebar from '../components/Sidebar';
+import './Analytics.css';
 
 const Analytics: React.FC = () => {
   const [stats, setStats] = useState({
@@ -58,18 +57,13 @@ const Analytics: React.FC = () => {
         messageService.getMessages()
       ]);
 
-      const users = [
-        ...(usersRes.data.admins || []),
-        ...(usersRes.data.teachers || []),
-        ...(usersRes.data.students || [])
-      ];
-
       const admins = usersRes.data.admins || [];
       const teachers = usersRes.data.teachers || [];
       const students = usersRes.data.students || [];
       const notifications = notificationsRes.data || [];
       const messages = messagesRes.data || [];
 
+      const totalUsers = admins.length + teachers.length + students.length;
       const activeNotifs = notifications.filter((n: any) => n.isActive).length;
       const recentMessages = messages.filter((m: any) => {
         const msgDate = new Date(m.createdAt);
@@ -78,7 +72,7 @@ const Analytics: React.FC = () => {
       }).length;
 
       setStats({
-        totalUsers: users.length,
+        totalUsers,
         totalAdmins: admins.length,
         totalTeachers: teachers.length,
         totalStudents: students.length,
@@ -99,25 +93,19 @@ const Analytics: React.FC = () => {
     event.detail.complete();
   };
 
-  const StatCard = ({ title, value, icon, color, subtitle }: any) => (
-    <IonCol size="12" sizeMd="6" sizeLg="3">
-      <IonCard style={{ margin: '8px', height: '100%' }}>
-        <IonCardContent>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>{title}</p>
-              <h2 style={{ margin: '8px 0', fontSize: '32px', fontWeight: 'bold', color: color }}>
-                {loading ? '...' : value}
-              </h2>
-              {subtitle && (
-                <p style={{ margin: 0, color: '#999', fontSize: '12px' }}>{subtitle}</p>
-              )}
-            </div>
-            <IonIcon icon={icon} style={{ fontSize: '48px', color: color, opacity: 0.2 }} />
-          </div>
-        </IonCardContent>
-      </IonCard>
-    </IonCol>
+  const StatCard = ({ title, value, icon, colorClass, subtitle }: any) => (
+    <div className="stat-card">
+      <div className="stat-info">
+        <p className="stat-label">{title}</p>
+        <h2 className={`stat-value ${colorClass}`}>
+          {loading ? <IonSkeletonText animated style={{ width: '60px', height: '32px' }} /> : value}
+        </h2>
+        <p className="stat-subtitle">{subtitle}</p>
+      </div>
+      <div className={`stat-icon ${colorClass}`}>
+        <IonIcon icon={icon} />
+      </div>
+    </div>
   );
 
   return (
@@ -138,116 +126,112 @@ const Analytics: React.FC = () => {
             <IonRefresherContent></IonRefresherContent>
           </IonRefresher>
 
-          <div style={{ padding: '16px', maxWidth: '1400px', margin: '0 auto' }}>
+          <div className="analytics-container">
             {/* User Statistics */}
-            <IonCard>
+            <IonCard className="analytics-card">
               <IonCardHeader>
                 <IonCardTitle>User Statistics</IonCardTitle>
               </IonCardHeader>
               <IonCardContent>
-                <IonGrid>
-                  <IonRow>
-                    <StatCard
-                      title="Total Users"
-                      value={stats.totalUsers}
-                      icon={peopleOutline}
-                      color="#667eea"
-                      subtitle="All registered users"
-                    />
-                    <StatCard
-                      title="Students"
-                      value={stats.totalStudents}
-                      icon={schoolOutline}
-                      color="#4CAF50"
-                      subtitle="Active students"
-                    />
-                    <StatCard
-                      title="Teachers"
-                      value={stats.totalTeachers}
-                      icon={briefcaseOutline}
-                      color="#FF9800"
-                      subtitle="Faculty members"
-                    />
-                    <StatCard
-                      title="Admins"
-                      value={stats.totalAdmins}
-                      icon={personOutline}
-                      color="#F44336"
-                      subtitle="System administrators"
-                    />
-                  </IonRow>
-                </IonGrid>
+                <div className="stats-grid">
+                  <StatCard
+                    title="Total Users"
+                    value={stats.totalUsers}
+                    icon={peopleOutline}
+                    colorClass="primary"
+                    subtitle="All registered users"
+                  />
+                  <StatCard
+                    title="Students"
+                    value={stats.totalStudents}
+                    icon={schoolOutline}
+                    colorClass="success"
+                    subtitle="Active students"
+                  />
+                  <StatCard
+                    title="Teachers"
+                    value={stats.totalTeachers}
+                    icon={briefcaseOutline}
+                    colorClass="warning"
+                    subtitle="Faculty members"
+                  />
+                  <StatCard
+                    title="Admins"
+                    value={stats.totalAdmins}
+                    icon={personOutline}
+                    colorClass="danger"
+                    subtitle="System administrators"
+                  />
+                </div>
               </IonCardContent>
             </IonCard>
 
             {/* Activity Statistics */}
-            <IonCard>
+            <IonCard className="analytics-card">
               <IonCardHeader>
                 <IonCardTitle>Activity Statistics</IonCardTitle>
               </IonCardHeader>
               <IonCardContent>
-                <IonGrid>
-                  <IonRow>
-                    <StatCard
-                      title="Total Notifications"
-                      value={stats.totalNotifications}
-                      icon={notificationsOutline}
-                      color="#9C27B0"
-                      subtitle="All time"
-                    />
-                    <StatCard
-                      title="Active Notifications"
-                      value={stats.activeNotifications}
-                      icon={trendingUpOutline}
-                      color="#00BCD4"
-                      subtitle="Currently active"
-                    />
-                    <StatCard
-                      title="Total Messages"
-                      value={stats.totalMessages}
-                      icon={chatbubblesOutline}
-                      color="#E91E63"
-                      subtitle="All conversations"
-                    />
-                    <StatCard
-                      title="Recent Activity"
-                      value={stats.recentActivity}
-                      icon={timeOutline}
-                      color="#FFC107"
-                      subtitle="Last 24 hours"
-                    />
-                  </IonRow>
-                </IonGrid>
+                <div className="stats-grid">
+                  <StatCard
+                    title="Total Notifications"
+                    value={stats.totalNotifications}
+                    icon={notificationsOutline}
+                    colorClass="purple"
+                    subtitle="All time"
+                  />
+                  <StatCard
+                    title="Active Notifications"
+                    value={stats.activeNotifications}
+                    icon={trendingUpOutline}
+                    colorClass="info"
+                    subtitle="Currently active"
+                  />
+                  <StatCard
+                    title="Total Messages"
+                    value={stats.totalMessages}
+                    icon={chatbubblesOutline}
+                    colorClass="danger"
+                    subtitle="All conversations"
+                  />
+                  <StatCard
+                    title="Recent Activity"
+                    value={stats.recentActivity}
+                    icon={timeOutline}
+                    colorClass="warning"
+                    subtitle="Last 24 hours"
+                  />
+                </div>
               </IonCardContent>
             </IonCard>
 
             {/* Quick Insights */}
-            <IonCard>
+            <IonCard className="analytics-card">
               <IonCardHeader>
                 <IonCardTitle>Quick Insights</IonCardTitle>
               </IonCardHeader>
               <IonCardContent>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: '#f5f5f5', borderRadius: '8px' }}>
-                    <span>User Distribution</span>
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                <div className="insights-list">
+                  <div className="insight-row">
+                    <span className="insight-label">User Distribution</span>
+                    <div className="insight-badges">
                       <IonBadge color="success">{stats.totalStudents} Students</IonBadge>
                       <IonBadge color="warning">{stats.totalTeachers} Teachers</IonBadge>
                       <IonBadge color="danger">{stats.totalAdmins} Admins</IonBadge>
                     </div>
                   </div>
-                  
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: '#f5f5f5', borderRadius: '8px' }}>
-                    <span>Notification Status</span>
-                    <div style={{ display: 'flex', gap: '8px' }}>
+
+                  <div className="insight-row">
+                    <span className="insight-label">Notification Status</span>
+                    <div className="insight-badges">
                       <IonBadge color="primary">{stats.activeNotifications} Active</IonBadge>
                       <IonBadge color="medium">{stats.totalNotifications - stats.activeNotifications} Inactive</IonBadge>
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: '#f5f5f5', borderRadius: '8px' }}>
-                    <span>Message Activity</span>
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                  <div className="insight-row">
+                    <span className="insight-label">Message Activity</span>
+                    <div className="insight-badges">
                       <IonBadge color="tertiary">{stats.recentActivity} Messages (24h)</IonBadge>
                       <IonBadge color="medium">{stats.totalMessages} Total</IonBadge>
                     </div>

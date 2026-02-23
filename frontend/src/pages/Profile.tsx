@@ -31,7 +31,7 @@ import {
   briefcaseOutline
 } from 'ionicons/icons';
 import { useAuth } from '../context/AuthContext';
-import { userService } from '../services/api';
+import { userService, getMediaUrl } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import './Profile.css';
 
@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
         bio: user.bio || ''
       });
       if (user.profilePicture) {
-        setPreviewUrl(`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${user.profilePicture}`);
+        setPreviewUrl(getMediaUrl(user.profilePicture));
       }
     }
   }, [user]);
@@ -115,7 +115,7 @@ const Profile: React.FC = () => {
       formDataToSend.append('username', formData.username);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('phone', formData.phone);
-      
+
       if (user?.role === 'teacher' && formData.department) {
         formDataToSend.append('department', formData.department);
       }
@@ -129,11 +129,11 @@ const Profile: React.FC = () => {
       }
 
       const response = await userService.updateProfile(formDataToSend);
-      
+
       // Update auth context with new user data including profile picture
       if (updateUser && response.data.user) {
         updateUser(response.data.user);
-        
+
         // Also update localStorage to persist the profile picture
         const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
         const updatedUser = { ...currentUser, ...response.data.user };
@@ -141,12 +141,12 @@ const Profile: React.FC = () => {
       }
 
       setToast({ show: true, message: 'Profile updated successfully!', color: 'success' });
-      
+
       // Force component to re-render by updating preview
       if (response.data.user?.profilePicture) {
-        setPreviewUrl(response.data.user.profilePicture.startsWith('http') 
-          ? response.data.user.profilePicture 
-          : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${response.data.user.profilePicture}`
+        setPreviewUrl(response.data.user.profilePicture.startsWith('http')
+          ? response.data.user.profilePicture
+          : getMediaUrl(response.data.user.profilePicture)
         );
       }
     } catch (error: any) {

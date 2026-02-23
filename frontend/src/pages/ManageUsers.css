@@ -1,97 +1,187 @@
-.users-container {
-  max-width: 1200px;
-  margin: 0 auto;
+/* Manage Users Page Styles */
+.manage-users-container {
   padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.filter-chips {
-  display: flex;
-  gap: 8px;
+/* Search Bar */
+ion-searchbar {
+  --background: #f8f9fa;
+  --border-radius: 12px;
+  --box-shadow: none;
+  --placeholder-color: #888;
+  --color: #1a1a2e;
   padding: 8px 16px;
-  overflow-x: auto;
 }
 
-.filter-chips ion-chip {
-  cursor: pointer;
+/* Segment */
+ion-segment {
+  --background: transparent;
+  padding: 0 8px;
+}
+
+ion-segment-button {
+  --color: #666;
+  --color-checked: #4285f4;
+  --indicator-color: #4285f4;
+  --indicator-height: 3px;
+  font-size: 12px;
   font-weight: 600;
+  min-height: 40px;
+  text-transform: capitalize;
 }
 
+/* User Card */
 .user-card {
-  margin-bottom: 12px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 0 0 14px 0;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .user-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.user-card ion-card-content {
+  padding: 16px;
 }
 
 .user-card-content {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 14px;
 }
 
-.user-card-loading {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.user-avatar {
-  width: 60px;
-  height: 60px;
+/* User Avatar */
+.user-avatar-container {
   flex-shrink: 0;
 }
 
-.avatar-placeholder {
+.user-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #4285f4;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+}
+
+.user-avatar img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+.user-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: bold;
   color: white;
 }
 
+.user-avatar.teacher {
+  border-color: #34a853;
+}
+
+.user-avatar.teacher .user-avatar-placeholder {
+  background: linear-gradient(135deg, #34a853 0%, #4ebc6a 100%);
+}
+
+.user-avatar.student {
+  border-color: #fbbc04;
+}
+
+.user-avatar.student .user-avatar-placeholder {
+  background: linear-gradient(135deg, #fbbc04 0%, #ffd033 100%);
+}
+
+/* User Info */
 .user-info {
   flex: 1;
   min-width: 0;
 }
 
-.user-name-row {
+.user-name-role {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.user-name-role h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.role-badge {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-detail-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 6px;
-}
-
-.user-info h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
-  margin: 0;
-}
-
-.user-email,
-.user-phone,
-.user-meta {
   font-size: 13px;
-  color: var(--ion-color-medium);
-  margin: 2px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #666;
 }
 
+.user-detail-item ion-icon {
+  font-size: 16px;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.user-department {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 4px 10px;
+  background: #e8f0fe;
+  color: #4285f4;
+  border-radius: 10px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* User Actions */
 .user-actions {
   display: flex;
+  flex-direction: column;
   gap: 4px;
   flex-shrink: 0;
 }
 
+.user-actions ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
+}
+
+/* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -99,48 +189,149 @@
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  color: var(--ion-color-medium);
 }
 
 .empty-state ion-icon {
-  font-size: 80px;
+  font-size: 64px;
+  color: #ccc;
   margin-bottom: 20px;
-  opacity: 0.3;
 }
 
 .empty-state h2 {
+  margin: 0 0 10px 0;
   font-size: 20px;
-  font-weight: 600;
-  margin: 12px 0;
+  font-weight: 700;
+  color: #1a1a2e;
 }
 
 .empty-state p {
+  margin: 0;
   font-size: 14px;
+  color: #888;
 }
 
-@media (max-width: 768px) {
-  .users-container {
+/* FAB */
+ion-fab-button {
+  --background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%);
+  --box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
+}
+
+/* Skeleton Loading */
+ion-skeleton-text {
+  border-radius: 8px;
+}
+
+/* Online Status */
+.online-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #34a853;
+  border: 2px solid #fff;
+}
+
+.user-avatar-container {
+  position: relative;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .user-card {
+    background: #ffffff !important;
+    --background: #ffffff !important;
+  }
+
+  .user-name-role h3 {
+    color: #1a1a2e !important;
+  }
+
+  .user-detail-item {
+    color: #666 !important;
+  }
+
+  .empty-state h2 {
+    color: #1a1a2e !important;
+  }
+
+  .empty-state p {
+    color: #888 !important;
+  }
+
+  ion-searchbar {
+    --background: #f8f9fa;
+    --color: #1a1a2e;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .manage-users-container {
     padding: 12px;
   }
 
-  .user-card-content {
-    gap: 12px;
+  .user-card ion-card-content {
+    padding: 14px;
   }
 
   .user-avatar {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
 
-  .avatar-placeholder {
-    font-size: 20px;
-  }
-
-  .user-info h3 {
+  .user-name-role h3 {
     font-size: 15px;
   }
 
-  .user-actions {
-    flex-direction: column;
+  .user-detail-item {
+    font-size: 12px;
   }
+
+  ion-segment-button {
+    font-size: 10px;
+    min-width: 0;
+    padding: 0 2px;
+  }
+}
+
+/* Status Toggle */
+.status-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 70px;
+}
+
+.status-toggle ion-toggle {
+  --handle-width: 20px;
+  --handle-height: 20px;
+  height: 26px;
+  width: 48px;
+}
+
+.status-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-label.active {
+  color: #2ecc71;
+}
+
+.status-label.inactive {
+  color: #95a5a6;
+}
+
+/* Inactive user card styling */
+.user-card.inactive {
+  opacity: 0.7;
+}
+
+.user-card.inactive .user-avatar {
+  filter: grayscale(50%);
 }

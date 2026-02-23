@@ -1,36 +1,84 @@
+/* Notifications Page Styles */
 .notifications-container {
-  max-width: 1200px;
-  margin: 0 auto;
   padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
+/* Search Bar */
+ion-searchbar {
+  --background: #f8f9fa;
+  --border-radius: 12px;
+  --box-shadow: none;
+  --placeholder-color: #888;
+  --color: #1a1a2e;
+  padding: 8px 16px;
+}
+
+ion-searchbar.searchbar-has-focus {
+  --background: #fff;
+  --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Segment */
+ion-segment {
+  --background: transparent;
+  padding: 0 8px;
+}
+
+ion-segment-button {
+  --color: #666;
+  --color-checked: #4285f4;
+  --indicator-color: #4285f4;
+  --indicator-height: 3px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 40px;
+  text-transform: capitalize;
+}
+
+ion-segment-button::part(indicator-background) {
+  background: #4285f4;
+  border-radius: 3px 3px 0 0;
+}
+
+/* Notification Card */
 .notification-card {
-  margin-bottom: 16px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 0 0 16px 0;
   overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 4px solid #4285f4;
 }
 
 .notification-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.notification-card ion-card-content {
-  overflow: hidden;
-}
-
-.notification-card.notification-emergency {
-  border-left: 4px solid var(--ion-color-danger);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
 }
 
 .notification-card.notification-event {
-  border-left: 4px solid var(--ion-color-warning);
+  border-left-color: #34a853;
 }
 
-.notification-card.notification-info {
-  border-left: 4px solid var(--ion-color-primary);
+.notification-card.notification-emergency {
+  border-left-color: #ea4335;
 }
 
+.notification-card.notification-success {
+  border-left-color: #34a853;
+}
+
+.notification-card.notification-warning {
+  border-left-color: #fbbc04;
+}
+
+.notification-card ion-card-content {
+  padding: 16px;
+}
+
+/* Notification Header */
 .notification-header {
   display: flex;
   justify-content: space-between;
@@ -44,84 +92,83 @@
   gap: 8px;
 }
 
+.type-icon {
+  font-size: 18px;
+}
+
+.notification-type ion-badge {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
 .notification-actions {
   display: flex;
-  gap: 4px;
+  gap: 0;
 }
 
-.type-icon {
-  font-size: 24px;
+.notification-actions ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
 }
 
+/* Notification Content */
 .notification-card h2 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 8px 0;
-  color: var(--ion-color-dark);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
-
-.notification-content {
-  font-size: 14px;
-  color: var(--ion-color-medium);
-  line-height: 1.5;
-  margin: 8px 0;
+  margin: 0 0 10px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a2e;
+  line-height: 1.4;
 }
 
 .notification-content p {
-  margin: 0 0 8px 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  overflow: hidden;
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
 }
 
 .show-more-btn {
   background: none;
   border: none;
-  color: var(--ion-color-primary);
+  color: #4285f4;
   font-size: 13px;
   font-weight: 600;
+  padding: 8px 0 0 0;
   cursor: pointer;
-  padding: 4px 8px;
-  margin-top: 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  display: inline-block;
 }
 
 .show-more-btn:hover {
-  background-color: rgba(var(--ion-color-primary-rgb), 0.1);
+  color: #3b78e7;
 }
 
-.show-more-btn:active {
-  background-color: rgba(var(--ion-color-primary-rgb), 0.2);
-}
-
+/* Notification Image */
 .notification-image {
   width: 100%;
   max-height: 200px;
   object-fit: cover;
-  border-radius: 8px;
-  margin: 12px 0;
+  border-radius: 12px;
+  margin-top: 14px;
 }
 
+/* Notification Footer */
 .notification-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #eee;
 }
 
 .notification-footer small {
-  color: var(--ion-color-medium);
+  color: #888;
   font-size: 12px;
+  font-weight: 500;
 }
 
+/* Empty State */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -129,36 +176,90 @@
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  color: var(--ion-color-medium);
 }
 
 .empty-state ion-icon {
-  font-size: 80px;
+  font-size: 64px;
+  color: #ccc;
   margin-bottom: 20px;
-  opacity: 0.3;
 }
 
 .empty-state h2 {
+  margin: 0 0 10px 0;
   font-size: 20px;
-  font-weight: 600;
-  margin: 12px 0;
+  font-weight: 700;
+  color: #1a1a2e;
 }
 
 .empty-state p {
+  margin: 0;
   font-size: 14px;
-  max-width: 300px;
+  color: #888;
 }
 
-@media (max-width: 768px) {
+/* Skeleton Loading */
+ion-skeleton-text {
+  border-radius: 8px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .notification-card {
+    background: #ffffff !important;
+    --background: #ffffff !important;
+  }
+
+  .notification-card h2 {
+    color: #1a1a2e !important;
+  }
+
+  .notification-content p {
+    color: #555 !important;
+  }
+
+  .notification-footer small {
+    color: #888 !important;
+  }
+
+  .empty-state h2 {
+    color: #1a1a2e !important;
+  }
+
+  .empty-state p {
+    color: #888 !important;
+  }
+
+  ion-searchbar {
+    --background: #f8f9fa;
+    --color: #1a1a2e;
+  }
+
+  ion-segment-button {
+    --color: #666;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
   .notifications-container {
     padding: 12px;
   }
 
-  .notification-card h2 {
-    font-size: 16px;
+  .notification-card ion-card-content {
+    padding: 14px;
   }
 
-  .notification-content {
+  .notification-card h2 {
+    font-size: 15px;
+  }
+
+  .notification-content p {
     font-size: 13px;
+  }
+
+  ion-segment-button {
+    font-size: 11px;
+    min-width: 0;
+    padding: 0 4px;
   }
 }

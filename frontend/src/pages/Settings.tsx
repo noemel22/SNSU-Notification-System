@@ -12,7 +12,6 @@ import {
   IonList,
   IonItem,
   IonLabel,
-  IonToggle,
   IonIcon,
   IonButton,
   IonToast,
@@ -21,12 +20,7 @@ import {
   IonNote
 } from '@ionic/react';
 import {
-  notificationsOutline,
-  moonOutline,
-  languageOutline,
   lockClosedOutline,
-  shieldCheckmarkOutline,
-  trashOutline,
   logOutOutline,
   keyOutline
 } from 'ionicons/icons';
@@ -39,12 +33,6 @@ import './Settings.css';
 const Settings: React.FC = () => {
   const history = useHistory();
   const { logout } = useAuth();
-  const [settings, setSettings] = useState({
-    pushNotifications: true,
-    emailNotifications: true,
-    darkMode: false,
-    soundEffects: true
-  });
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -54,10 +42,6 @@ const Settings: React.FC = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '', color: 'success' });
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
-  const handleToggle = (key: string, value: boolean) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
-    setToast({ show: true, message: 'Settings updated', color: 'success' });
-  };
 
   const handleLogout = () => {
     logout();
@@ -73,28 +57,28 @@ const Settings: React.FC = () => {
 
   const validatePasswordChange = () => {
     const errors: any = {};
-    
+
     if (!passwordData.currentPassword) {
       errors.currentPassword = 'Current password is required';
     }
-    
+
     if (!passwordData.newPassword) {
       errors.newPassword = 'New password is required';
     } else if (passwordData.newPassword.length < 6) {
       errors.newPassword = 'Password must be at least 6 characters';
     }
-    
+
     if (!passwordData.confirmPassword) {
       errors.confirmPassword = 'Please confirm your new password';
     } else if (passwordData.newPassword !== passwordData.confirmPassword) {
       errors.confirmPassword = 'Passwords do not match';
     }
-    
-    if (passwordData.currentPassword && passwordData.newPassword && 
-        passwordData.currentPassword === passwordData.newPassword) {
+
+    if (passwordData.currentPassword && passwordData.newPassword &&
+      passwordData.currentPassword === passwordData.newPassword) {
       errors.newPassword = 'New password must be different from current password';
     }
-    
+
     setPasswordErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -114,8 +98,7 @@ const Settings: React.FC = () => {
       });
 
       setToast({ show: true, message: 'Password changed successfully!', color: 'success' });
-      
-      // Clear form
+
       setPasswordData({
         currentPassword: '',
         newPassword: '',
@@ -148,70 +131,6 @@ const Settings: React.FC = () => {
 
         <IonContent>
           <div className="settings-container">
-            {/* Notifications Settings */}
-            <IonCard>
-              <IonCardContent>
-                <div className="settings-section-title">
-                  <IonIcon icon={notificationsOutline} />
-                  <h2>Notifications</h2>
-                </div>
-                <IonList>
-                  <IonItem>
-                    <IonLabel>
-                      <h3>Push Notifications</h3>
-                      <p>Receive push notifications on your device</p>
-                    </IonLabel>
-                    <IonToggle
-                      checked={settings.pushNotifications}
-                      onIonChange={(e) => handleToggle('pushNotifications', e.detail.checked)}
-                    />
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>
-                      <h3>Email Notifications</h3>
-                      <p>Receive notifications via email</p>
-                    </IonLabel>
-                    <IonToggle
-                      checked={settings.emailNotifications}
-                      onIonChange={(e) => handleToggle('emailNotifications', e.detail.checked)}
-                    />
-                  </IonItem>
-                </IonList>
-              </IonCardContent>
-            </IonCard>
-
-            {/* Appearance Settings */}
-            <IonCard>
-              <IonCardContent>
-                <div className="settings-section-title">
-                  <IonIcon icon={moonOutline} />
-                  <h2>Appearance</h2>
-                </div>
-                <IonList>
-                  <IonItem>
-                    <IonLabel>
-                      <h3>Dark Mode</h3>
-                      <p>Switch to dark theme</p>
-                    </IonLabel>
-                    <IonToggle
-                      checked={settings.darkMode}
-                      onIonChange={(e) => handleToggle('darkMode', e.detail.checked)}
-                    />
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>
-                      <h3>Sound Effects</h3>
-                      <p>Play sounds for actions</p>
-                    </IonLabel>
-                    <IonToggle
-                      checked={settings.soundEffects}
-                      onIonChange={(e) => handleToggle('soundEffects', e.detail.checked)}
-                    />
-                  </IonItem>
-                </IonList>
-              </IonCardContent>
-            </IonCard>
-
             {/* Password Change */}
             <IonCard>
               <IonCardContent>
@@ -277,25 +196,6 @@ const Settings: React.FC = () => {
               </IonCardContent>
             </IonCard>
 
-            {/* About */}
-            <IonCard>
-              <IonCardContent>
-                <div className="settings-section-title">
-                  <IonIcon icon={shieldCheckmarkOutline} />
-                  <h2>About</h2>
-                </div>
-                <IonList>
-                  <IonItem button>
-                    <IonIcon icon={languageOutline} slot="start" />
-                    <IonLabel>
-                      <h3>Language</h3>
-                      <p>English (default)</p>
-                    </IonLabel>
-                  </IonItem>
-                </IonList>
-              </IonCardContent>
-            </IonCard>
-
             {/* Account Actions */}
             <IonCard>
               <IonCardContent>
@@ -336,8 +236,6 @@ const Settings: React.FC = () => {
               { text: 'Logout', role: 'destructive', handler: handleLogout }
             ]}
           />
-
-
         </IonContent>
       </IonPage>
     </>

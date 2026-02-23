@@ -8,12 +8,13 @@ export interface NotificationAttributes {
   type: 'info' | 'event' | 'emergency' | 'success' | 'warning';
   imagePath?: string;
   thumbnailPath?: string;
+  eventDate?: Date;
   timestamp: Date;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface NotificationCreationAttributes extends Optional<NotificationAttributes, 'id' | 'imagePath' | 'thumbnailPath' | 'timestamp'> {}
+export interface NotificationCreationAttributes extends Optional<NotificationAttributes, 'id' | 'imagePath' | 'thumbnailPath' | 'timestamp'> { }
 
 class Notification extends Model<NotificationAttributes, NotificationCreationAttributes> implements NotificationAttributes {
   public id!: number;
@@ -22,6 +23,7 @@ class Notification extends Model<NotificationAttributes, NotificationCreationAtt
   public type!: 'info' | 'event' | 'emergency' | 'success' | 'warning';
   public imagePath?: string;
   public thumbnailPath?: string;
+  public eventDate?: Date;
   public timestamp!: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -53,6 +55,10 @@ Notification.init(
     },
     thumbnailPath: {
       type: DataTypes.STRING(200),
+      allowNull: true
+    },
+    eventDate: {
+      type: DataTypes.DATE,
       allowNull: true
     },
     timestamp: {

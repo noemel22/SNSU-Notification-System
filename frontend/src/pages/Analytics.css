@@ -1,0 +1,254 @@
+/* Analytics Dashboard Styles */
+.analytics-container {
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Section Cards */
+.analytics-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 0 0 20px 0;
+    overflow: hidden;
+}
+
+.analytics-card ion-card-header {
+    padding: 18px 20px 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.analytics-card ion-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.analytics-card ion-card-content {
+    padding: 16px 20px 20px;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+/* Stat Card */
+.stat-card {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.stat-value.primary {
+    color: #4285f4;
+}
+
+.stat-value.success {
+    color: #34a853;
+}
+
+.stat-value.warning {
+    color: #ff9800;
+}
+
+.stat-value.danger {
+    color: #ea4335;
+}
+
+.stat-value.info {
+    color: #00bcd4;
+}
+
+.stat-value.purple {
+    color: #9c27b0;
+}
+
+.stat-subtitle {
+    font-size: 11px;
+    color: #999;
+}
+
+/* Scoped to analytics page only - prevents affecting Dashboard icons */
+.analytics-container .stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.analytics-container .stat-icon ion-icon {
+    font-size: 28px;
+    color: white;
+}
+
+.analytics-container .stat-icon.primary {
+    background: #4285f4;
+}
+
+.analytics-container .stat-icon.success {
+    background: #34a853;
+}
+
+.analytics-container .stat-icon.warning {
+    background: #ff9800;
+}
+
+.analytics-container .stat-icon.danger {
+    background: #ea4335;
+}
+
+.analytics-container .stat-icon.info {
+    background: #00bcd4;
+}
+
+.analytics-container .stat-icon.purple {
+    background: #9c27b0;
+}
+
+/* Quick Insights */
+.insights-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.insight-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.insight-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+}
+
+.insight-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.insight-badges ion-badge {
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .analytics-card {
+        background: #ffffff !important;
+        --background: #ffffff !important;
+    }
+
+    .analytics-card ion-card-title {
+        color: #1a1a2e !important;
+    }
+
+    .stat-card {
+        background: #f8f9fa;
+    }
+
+    .stat-label {
+        color: #666 !important;
+    }
+
+    .stat-subtitle {
+        color: #999 !important;
+    }
+
+    .insight-row {
+        background: #f8f9fa;
+    }
+
+    .insight-label {
+        color: #1a1a2e !important;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .analytics-container {
+        padding: 12px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-value {
+        font-size: 26px;
+    }
+
+    .stat-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .stat-icon ion-icon {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .insight-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .insight-badges {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}

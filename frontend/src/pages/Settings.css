@@ -1,61 +1,190 @@
+/* Settings Page Styles */
 .settings-container {
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 16px;
 }
 
+/* Settings Cards */
+.settings-card {
+  background: #ffffff !important;
+  --background: #ffffff !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin: 0 0 16px 0;
+  overflow: hidden;
+}
+
+.settings-card ion-card-content {
+  padding: 20px;
+}
+
+/* Section Title */
 .settings-section-title {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #4285f4;
 }
 
 .settings-section-title ion-icon {
-  font-size: 24px;
-  color: var(--ion-color-primary);
+  font-size: 22px;
+  color: #4285f4;
 }
 
 .settings-section-title h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--ion-color-dark);
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a2e !important;
   margin: 0;
 }
 
-.settings-container ion-list {
+/* Settings List */
+.settings-list {
   background: transparent;
 }
 
-.settings-container ion-item {
+.settings-item {
   --background: transparent;
-  --border-color: rgba(0, 0, 0, 0.1);
+  --border-color: #f0f0f0;
   --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  padding: 12px 0;
 }
 
-.settings-container ion-item h3 {
+.settings-item:last-child {
+  --border-color: transparent;
+}
+
+.setting-info {
+  flex: 1;
+}
+
+.setting-info h3 {
   font-size: 15px;
   font-weight: 600;
-  color: var(--ion-color-dark);
-  margin-bottom: 4px;
+  color: #1a1a2e !important;
+  margin: 0 0 4px 0;
 }
 
-.settings-container ion-item p {
+.setting-info p {
   font-size: 13px;
-  color: var(--ion-color-medium);
+  color: #666 !important;
+  margin: 0;
 }
 
+/* Toggle */
+.settings-toggle {
+  --background: #e0e0e0;
+  --background-checked: #4285f4;
+  --handle-background: #ffffff;
+  --handle-background-checked: #ffffff;
+  padding-left: 12px;
+}
+
+/* Input Items in Settings */
+.settings-input-item {
+  --border-width: 1px;
+  --border-color: #e0e0e0;
+  --border-radius: 10px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --min-height: 44px;
+  --background: #f8f9fa !important;
+  background: #f8f9fa !important;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  margin-top: 12px;
+}
+
+.settings-input-item:focus-within {
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.15);
+}
+
+.settings-input-item ion-input {
+  --color: #1a1a2e !important;
+  color: #1a1a2e !important;
+  font-size: 14px;
+}
+
+/* Form Field */
+.settings-form-field {
+  margin-bottom: 16px;
+}
+
+.settings-field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333 !important;
+  margin-bottom: 8px;
+}
+
+.settings-field-label ion-icon {
+  font-size: 16px;
+  color: #4285f4;
+}
+
+/* Buttons */
+.settings-button {
+  --background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%);
+  --color: white;
+  --border-radius: 10px;
+  height: 46px;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 16px;
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.35);
+}
+
+.settings-button.danger {
+  --background: linear-gradient(135deg, #ea4335 0%, #f06459 100%);
+  box-shadow: 0 4px 15px rgba(234, 67, 53, 0.35);
+}
+
+/* Logout Button */
+.logout-button {
+  --background: transparent;
+  --color: #ea4335;
+  --border-width: 2px;
+  --border-color: #ea4335;
+  --border-radius: 10px;
+  height: 46px;
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.logout-button:hover {
+  --background: rgba(234, 67, 53, 0.1);
+}
+
+/* App Info */
 .app-info {
   text-align: center;
-  padding: 32px 16px;
-  color: var(--ion-color-medium);
+  padding: 24px 16px;
 }
 
 .app-info p {
   font-size: 12px;
   margin: 4px 0;
+  color: #888 !important;
 }
 
+.app-info .version {
+  font-weight: 600;
+  color: #666;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .settings-container {
     padding: 12px;
@@ -63,5 +192,64 @@
 
   .settings-section-title h2 {
     font-size: 16px;
+  }
+
+  .setting-info h3 {
+    font-size: 14px;
+  }
+
+  .setting-info p {
+    font-size: 12px;
+  }
+}
+
+/* Dark Mode - Keep cards white */
+@media (prefers-color-scheme: dark) {
+
+  .settings-card,
+  ion-card {
+    background: #ffffff !important;
+    --background: #ffffff !important;
+  }
+
+  .settings-section-title h2,
+  .setting-info h3 {
+    color: #1a1a2e !important;
+  }
+
+  .setting-info p {
+    color: #666 !important;
+  }
+
+  .settings-field-label {
+    color: #333 !important;
+  }
+
+  .settings-input-item {
+    --background: #f8f9fa !important;
+    background: #f8f9fa !important;
+  }
+
+  .settings-input-item ion-input {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+  }
+
+  .app-info,
+  .app-info p {
+    color: #888 !important;
+  }
+
+  ion-item {
+    --background: transparent !important;
+  }
+
+  ion-item h3,
+  ion-label {
+    color: #1a1a2e !important;
+  }
+
+  ion-item p {
+    color: #666 !important;
   }
 }

@@ -1,0 +1,575 @@
+/* ================================================
+   SNSU Notification System - Dark Mode Overrides
+   Comprehensive fix for ALL visibility issues
+   ================================================ */
+
+/* ================================================
+   FORCE LIGHT MODE FOR ENTIRE APP CONTENT
+   Override Ionic's dark mode detection
+   ================================================ */
+
+/* Force light background on ALL ion-content EXCEPT sidebar, login, register */
+ion-content {
+    --background: #f5f5f5 !important;
+    --ion-background-color: #f5f5f5 !important;
+}
+
+/* Login and Register pages keep their gradient backgrounds */
+/* Note: login-page class is ON ion-content, not parent */
+ion-content.login-page,
+ion-content.register-page {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    --ion-background-color: transparent !important;
+}
+
+/* Sidebar keeps dark background */
+ion-menu ion-content {
+    --background: #1a1a2e !important;
+    --ion-background-color: #1a1a2e !important;
+}
+
+/* Force Ionic to use light mode colors */
+:root {
+    --ion-background-color: #f5f5f5 !important;
+    --ion-text-color: #1a1a2e !important;
+    --ion-toolbar-background: var(--ion-color-primary) !important;
+}
+
+/* Override dark mode body styles */
+body {
+    --ion-background-color: #f5f5f5 !important;
+    --ion-text-color: #1a1a2e !important;
+    --ion-item-background: #ffffff !important;
+    --ion-card-background: #ffffff !important;
+}
+
+/* ================================================
+   ION-ICON - FORCE SVG VISIBILITY
+   This is the main fix for icons showing as boxes
+   ================================================ */
+ion-icon {
+    --ionicon-stroke-width: 32px;
+}
+
+ion-icon svg {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* Ensure stat icons show their SVG content */
+.stat-icon ion-icon,
+.stat-card .stat-icon {
+    --ionicon-stroke-width: 32px;
+}
+
+/* ================================================
+   TOOLBAR - Force light backgrounds
+   ================================================ */
+ion-toolbar:not([color]) {
+    --background: #ffffff !important;
+    --color: #1a1a2e !important;
+}
+
+ion-toolbar ion-title {
+    color: inherit !important;
+}
+
+/* Header toolbars with content */
+ion-header ion-toolbar:not([color]) {
+    --background: #ffffff !important;
+}
+
+/* ================================================
+   SEGMENT TABS - CRITICAL FIX
+   Force visible text colors
+   ================================================ */
+ion-segment {
+    --background: #ffffff !important;
+    background: #ffffff !important;
+}
+
+ion-segment-button {
+    --color: #333333 !important;
+    --color-checked: #4285f4 !important;
+    --indicator-color: #4285f4 !important;
+    --background: transparent !important;
+    --background-checked: transparent !important;
+    color: #333333 !important;
+}
+
+ion-segment-button::part(indicator-background) {
+    background: #4285f4 !important;
+}
+
+ion-segment-button ion-label {
+    color: inherit !important;
+}
+
+ion-segment-button.segment-button-checked {
+    --color: #4285f4 !important;
+    color: #4285f4 !important;
+}
+
+ion-segment-button.segment-button-checked ion-label {
+    color: #4285f4 !important;
+}
+
+/* ================================================
+   SEARCHBAR - Force light theme
+   ================================================ */
+ion-searchbar {
+    --background: #f0f0f0 !important;
+    --color: #1a1a2e !important;
+    --placeholder-color: #666666 !important;
+    --icon-color: #666666 !important;
+}
+
+ion-searchbar input {
+    color: #1a1a2e !important;
+}
+
+/* ================================================
+   CARDS - Force white backgrounds EXCEPT welcome-card
+   ================================================ */
+ion-card:not(.welcome-card) {
+    --background: #ffffff !important;
+    background: #ffffff !important;
+    --color: #1a1a2e !important;
+}
+
+/* Welcome card keeps its blue gradient */
+.welcome-card {
+    --background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%) !important;
+    background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%) !important;
+    --color: #ffffff !important;
+}
+
+ion-card-header {
+    --color: #1a1a2e !important;
+}
+
+ion-card-title {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+}
+
+ion-card-content {
+    --color: #333333 !important;
+    color: #333333 !important;
+}
+
+/* WELCOME CARD - Blue gradient needs WHITE text */
+.welcome-card {
+    --color: #ffffff !important;
+}
+
+.welcome-card ion-card-content {
+    --color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.welcome-card .greeting,
+.welcome-card .user-details .greeting {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.welcome-card h2,
+.welcome-card .user-details h2 {
+    color: #ffffff !important;
+}
+
+.welcome-card .department,
+.welcome-card .course {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ================================================
+   ITEMS AND LABELS - Force dark text
+   ================================================ */
+ion-item {
+    --background: transparent !important;
+    --color: #1a1a2e !important;
+}
+
+ion-label {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+}
+
+/* Sidebar items keep white text */
+ion-menu ion-item {
+    --color: #ffffff !important;
+}
+
+ion-menu ion-label {
+    --color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+ion-menu ion-icon {
+    color: #ffffff !important;
+}
+
+/* ================================================
+   INPUT FIELDS - Force dark text
+   ================================================ */
+ion-input {
+    --color: #1a1a2e !important;
+    --placeholder-color: #888888 !important;
+    color: #1a1a2e !important;
+}
+
+ion-input input {
+    color: #1a1a2e !important;
+}
+
+ion-textarea {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+}
+
+ion-select {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+}
+
+/* ================================================
+   MESSAGES PAGE - Force light background
+   ================================================ */
+.messages-content {
+    --background: #f0f2f5 !important;
+}
+
+.message-input-container {
+    background: #ffffff !important;
+    border-top: 1px solid #e0e0e0 !important;
+}
+
+.message-input-item {
+    --background: #f5f5f5 !important;
+}
+
+.message-input-item ion-input {
+    --color: #1a1a2e !important;
+    color: #1a1a2e !important;
+}
+
+.other-message .message-bubble {
+    background: #ffffff !important;
+}
+
+.other-message .message-content {
+    color: #1a1a2e !important;
+}
+
+.date-divider span {
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: white !important;
+}
+
+/* ================================================
+   FAB BUTTON - Force icon visibility
+   ================================================ */
+ion-fab-button {
+    --background: #4285f4 !important;
+    --color: #ffffff !important;
+}
+
+ion-fab-button ion-icon {
+    color: #ffffff !important;
+    font-size: 24px !important;
+}
+
+ion-fab-button ion-icon svg {
+    fill: #ffffff !important;
+}
+
+/* ================================================
+   STAT CARDS - Dashboard & Analytics icons
+   ================================================ */
+.stat-card {
+    background: #ffffff !important;
+    --background: #ffffff !important;
+}
+
+.stat-card h3 {
+    color: #1a1a2e !important;
+}
+
+.stat-card p {
+    color: #666666 !important;
+}
+
+/* Dashboard inline icons */
+.stat-card .stat-icon {
+    display: inline-block !important;
+}
+
+.stat-card .stat-icon.primary {
+    color: #4285f4 !important;
+}
+
+.stat-card .stat-icon.success {
+    color: #34a853 !important;
+}
+
+.stat-card .stat-icon.warning {
+    color: #ff9800 !important;
+}
+
+.stat-card .stat-icon.danger {
+    color: #ea4335 !important;
+}
+
+.stat-card .stat-icon.info {
+    color: #00bcd4 !important;
+}
+
+/* Analytics icon containers */
+.analytics-container .stat-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.analytics-container .stat-icon ion-icon {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* ================================================
+   NOTIFICATION CARDS
+   ================================================ */
+.notification-card {
+    background: #ffffff !important;
+}
+
+.notification-card h2 {
+    color: #1a1a2e !important;
+}
+
+.notification-content p {
+    color: #555555 !important;
+}
+
+.notification-content small {
+    color: #888888 !important;
+}
+
+.notification-item {
+    background: #f8f9fa !important;
+}
+
+.notification-item h3 {
+    color: #1a1a2e !important;
+}
+
+/* ================================================
+   CALENDAR PAGE
+   ================================================ */
+.calendar-card {
+    background: #ffffff !important;
+}
+
+.calendar-title h2,
+.calendar-nav .month-year,
+.section-title {
+    color: #1a1a2e !important;
+}
+
+.weekday {
+    color: #666666 !important;
+}
+
+.day-number {
+    color: #1a1a2e !important;
+}
+
+.calendar-day.today .day-number {
+    color: #ffffff !important;
+}
+
+.event-info h4 {
+    color: #1a1a2e !important;
+}
+
+.event-info p {
+    color: #666666 !important;
+}
+
+/* ================================================
+   PROFILE & SETTINGS PAGES
+   ================================================ */
+.profile-header-info h2,
+.form-section h3 {
+    color: #1a1a2e !important;
+}
+
+.profile-meta {
+    color: #666666 !important;
+}
+
+.field-label {
+    color: #333333 !important;
+}
+
+.settings-card {
+    background: #ffffff !important;
+}
+
+.settings-section-title h2,
+.setting-info h3 {
+    color: #1a1a2e !important;
+}
+
+.setting-info p {
+    color: #666666 !important;
+}
+
+/* ================================================
+   HELP PAGE
+   ================================================ */
+.help-card {
+    background: #ffffff !important;
+}
+
+.help-header h1,
+.section-title h2,
+.faq-question span {
+    color: #1a1a2e !important;
+}
+
+.help-header p,
+.faq-answer {
+    color: #666666 !important;
+}
+
+/* ================================================
+   MANAGE USERS & STUDENTS PAGES
+   ================================================ */
+.user-card,
+.student-card,
+.summary-card {
+    background: #ffffff !important;
+}
+
+.summary-card h2,
+.summary-card .count {
+    color: #1a1a2e !important;
+}
+
+.summary-card p,
+.summary-card .subtitle {
+    color: #666666 !important;
+}
+
+.summary-icon {
+    color: #4285f4 !important;
+}
+
+.user-name-role h3,
+.student-name {
+    color: #1a1a2e !important;
+}
+
+.user-detail-item,
+.detail-row span {
+    color: #666666 !important;
+}
+
+/* ================================================
+   ANALYTICS PAGE
+   ================================================ */
+.analytics-card {
+    background: #ffffff !important;
+}
+
+.analytics-card ion-card-title {
+    color: #1a1a2e !important;
+}
+
+.stat-label {
+    color: #666666 !important;
+}
+
+.stat-subtitle {
+    color: #999999 !important;
+}
+
+.insight-label {
+    color: #1a1a2e !important;
+}
+
+.insight-row {
+    background: #f8f9fa !important;
+}
+
+/* ================================================
+   EMPTY STATES
+   ================================================ */
+.empty-state h2 {
+    color: #1a1a2e !important;
+}
+
+.empty-state p {
+    color: #888888 !important;
+}
+
+/* ================================================
+   MODALS
+   ================================================ */
+ion-modal ion-content {
+    --background: #ffffff !important;
+}
+
+ion-modal ion-toolbar {
+    --background: #ffffff !important;
+}
+
+ion-alert .alert-wrapper {
+    --background: #ffffff !important;
+}
+
+/* ================================================
+   ACTION SHEETS & SELECT POPOVERS
+   ================================================ */
+ion-action-sheet {
+    --background: #ffffff !important;
+    --color: #1a1a2e !important;
+}
+
+ion-action-sheet .action-sheet-group {
+    background: #ffffff !important;
+}
+
+ion-action-sheet .action-sheet-title {
+    color: #1a1a2e !important;
+}
+
+ion-action-sheet .action-sheet-button {
+    color: #1a1a2e !important;
+}
+
+ion-action-sheet .action-sheet-button.action-sheet-cancel {
+    color: #ea4335 !important;
+}
+
+/* Select popover/alert */
+ion-select-popover ion-item {
+    --color: #1a1a2e !important;
+}
+
+ion-select-popover ion-label {
+    color: #1a1a2e !important;
+}
+
+.select-interface-option {
+    color: #1a1a2e !important;
+}
+
+/* Alert radio/checkbox buttons */
+ion-alert .alert-radio-label,
+ion-alert .alert-checkbox-label,
+ion-alert .alert-button {
+    color: #1a1a2e !important;
+}

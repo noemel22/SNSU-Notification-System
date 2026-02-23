@@ -19,9 +19,11 @@ import {
   IonToast,
   IonLoading,
   IonIcon,
-  IonNote
+  IonNote,
+  IonDatetime,
+  IonModal
 } from '@ionic/react';
-import { sendOutline, imageOutline } from 'ionicons/icons';
+import { sendOutline, imageOutline, calendarOutline, closeOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { notificationService } from '../services/api';
 import Sidebar from '../components/Sidebar';
@@ -32,13 +34,15 @@ const CreateNotification: React.FC = () => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    type: 'info'
+    type: 'info',
+    eventDate: ''
   });
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '', color: 'success' });
   const [errors, setErrors] = useState<any>({});
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleChange = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -65,9 +69,25 @@ const CreateNotification: React.FC = () => {
     if (formData.title.length < 5) newErrors.title = 'Title must be at least 5 characters';
     if (!formData.content.trim()) newErrors.content = 'Content is required';
     if (formData.content.length < 10) newErrors.content = 'Content must be at least 10 characters';
-    
+    if (formData.type === 'event' && !formData.eventDate) {
+      newErrors.eventDate = 'Event date is required for events';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const formatDisplayDate = (isoDate: string) => {
+    if (!isoDate) return '';
+    const date = new Date(isoDate);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,6 +105,9 @@ const CreateNotification: React.FC = () => {
       formDataToSend.append('title', formData.title);
       formDataToSend.append('content', formData.content);
       formDataToSend.append('type', formData.type);
+      if (formData.eventDate) {
+        formDataToSend.append('eventDate', formData.eventDate);
+      }
       if (image) {
         formDataToSend.append('image', image);
       }
@@ -103,6 +126,10 @@ const CreateNotification: React.FC = () => {
     }
   };
 
+  const clearEventDate = () => {
+    handleChange('eventDate', '');
+  };
+
   return (
     <>
       <Sidebar />
@@ -118,7 +145,7 @@ const CreateNotification: React.FC = () => {
 
         <IonContent>
           <div className="create-notification-container">
-            <IonCard>
+            <IonCard className="notification-form-card">
               <IonCardContent>
                 <form onSubmit={handleSubmit}>
                   {/* Title */}
@@ -158,15 +185,78 @@ const CreateNotification: React.FC = () => {
                     </IonNote>
                   </div>
 
+                  {/* Event Date - Always visible */}
+                  <div className="form-field">
+                    <IonLabel className="field-label">
+                      Schedule Date & Time {formData.type === 'event' ? '*' : '(Optional)'}
+                    </IonLabel>
+                    <IonItem
+                      className={`input-item date-picker-item ${errors.eventDate ? 'error' : ''}`}
+                      lines="none"
+                      button
+                      onClick={() => setShowDatePicker(true)}
+                    >
+                      <IonIcon icon={calendarOutline} slot="start" color="primary" />
+                      <IonLabel className={formData.eventDate ? '' : 'placeholder'}>
+                        {formData.eventDate
+                          ? formatDisplayDate(formData.eventDate)
+                          : 'Select date and time'}
+                      </IonLabel>
+                      {formData.eventDate && (
+                        <IonButton
+                          fill="clear"
+                          slot="end"
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            clearEventDate();
+                          }}
+                        >
+                          <IonIcon icon={closeOutline} />
+                        </IonButton>
+                      )}
+                    </IonItem>
+                    {errors.eventDate && (
+                      <IonNote color="danger" className="error-message">{errors.eventDate}</IonNote>
+                    )}
+                    <IonNote className="helper-text">
+                      {formData.type === 'event'
+                        ? 'When will this event take place?'
+                        : 'Optional: Schedule when this notification should apply'}
+                    </IonNote>
+
+                    <IonModal isOpen={showDatePicker} onDidDismiss={() => setShowDatePicker(false)}>
+                      <IonHeader>
+                        <IonToolbar>
+                          <IonTitle>Select Date & Time</IonTitle>
+                          <IonButtons slot="end">
+                            <IonButton onClick={() => setShowDatePicker(false)}>Done</IonButton>
+                          </IonButtons>
+                        </IonToolbar>
+                      </IonHeader>
+                      <IonContent className="date-picker-content">
+                        <IonDatetime
+                          presentation="date-time"
+                          value={formData.eventDate || undefined}
+                          onIonChange={(e) => {
+                            handleChange('eventDate', e.detail.value);
+                          }}
+                          min={new Date().toISOString()}
+                          className="date-picker-datetime"
+                        />
+                      </IonContent>
+                    </IonModal>
+                  </div>
+
                   {/* Content */}
                   <div className="form-field">
                     <IonLabel className="field-label">Content *</IonLabel>
-                    <IonItem className={`input-item ${errors.content ? 'error' : ''}`} lines="none">
+                    <IonItem className={`input-item textarea-item ${errors.content ? 'error' : ''}`} lines="none">
                       <IonTextarea
                         value={formData.content}
                         onIonInput={(e: any) => handleChange('content', e.target.value)}
                         placeholder="Enter notification content..."
-                        rows={6}
+                        rows={5}
                         required
                       />
                     </IonItem>
@@ -193,6 +283,7 @@ const CreateNotification: React.FC = () => {
                         expand="block"
                         fill="outline"
                         onClick={() => document.getElementById('image-upload')?.click()}
+                        className="upload-button"
                       >
                         <IonIcon slot="start" icon={imageOutline} />
                         {image ? 'Change Image' : 'Upload Image'}
@@ -201,6 +292,17 @@ const CreateNotification: React.FC = () => {
                     {imagePreview && (
                       <div className="image-preview">
                         <img src={imagePreview} alt="Preview" />
+                        <IonButton
+                          fill="clear"
+                          size="small"
+                          className="remove-image-btn"
+                          onClick={() => {
+                            setImage(null);
+                            setImagePreview('');
+                          }}
+                        >
+                          <IonIcon icon={closeOutline} />
+                        </IonButton>
                       </div>
                     )}
                     <IonNote className="helper-text">
@@ -224,6 +326,7 @@ const CreateNotification: React.FC = () => {
                     fill="clear"
                     onClick={() => history.goBack()}
                     disabled={isLoading}
+                    className="cancel-button"
                   >
                     Cancel
                   </IonButton>

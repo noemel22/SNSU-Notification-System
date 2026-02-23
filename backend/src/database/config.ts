@@ -7,7 +7,26 @@ const dbType = process.env.DB_TYPE || 'sqlite';
 
 let sequelize: Sequelize;
 
-if (dbType === 'postgres') {
+if (dbType === 'postgres' && process.env.DATABASE_URL) {
+  // Production: Use Neon PostgreSQL via connection string
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
+    logging: process.env.DB_LOGGING === 'true' ? console.log : false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  });
+} else if (dbType === 'postgres') {
+  // PostgreSQL without connection string (manual config)
   sequelize = new Sequelize({
     dialect: 'postgres',
     host: process.env.DB_HOST || 'localhost',
@@ -24,6 +43,7 @@ if (dbType === 'postgres') {
     }
   });
 } else {
+  // Development: Use SQLite
   sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: process.env.DB_STORAGE || './database.sqlite',
@@ -31,7 +51,6 @@ if (dbType === 'postgres') {
     define: {
       timestamps: true
     },
-    // Enable foreign keys for SQLite
     dialectOptions: {
       busyTimeout: 3000
     }

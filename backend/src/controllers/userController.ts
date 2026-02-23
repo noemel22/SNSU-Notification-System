@@ -2,10 +2,9 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import User from '../models/User';
 import Message from '../models/Message';
+import Media from '../models/Media';
 import { Op } from 'sequelize';
 import sharp from 'sharp';
-import path from 'path';
-import fs from 'fs';
 
 export const getUsers = async (req: AuthRequest, res: Response) => {
   try {
@@ -27,7 +26,7 @@ export const getUsers = async (req: AuthRequest, res: Response) => {
 export const getUserById = async (req: AuthRequest, res: Response) => {
   try {
     const user = await User.findByPk(req.params.id);
-    
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -136,7 +135,7 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
       return res.status(403).json({ error: 'Cannot delete default admin account' });
     }
 
-    // Delete related messages first to avoid foreign key constraint errors
+    // Delete related messages
     try {
       await Message.destroy({
         where: {
@@ -148,22 +147,14 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
       });
     } catch (msgError: any) {
       console.warn('Warning: Could not delete user messages:', msgError.message);
-      // Continue with user deletion even if message deletion fails
     }
 
-    // Delete profile picture if exists
-    if (user.profilePicture) {
-      const imagePath = path.join(process.env.UPLOAD_PATH || './uploads', user.profilePicture);
-      try {
-        if (fs.existsSync(imagePath)) {
-          fs.unlinkSync(imagePath);
-        }
-      } catch (fileError: any) {
-        console.warn('Warning: Could not delete profile picture:', fileError.message);
-      }
+    // Delete profile picture media if stored in DB
+    if (user.profilePicture?.startsWith('media/')) {
+      const mediaId = user.profilePicture.split('/')[1];
+      await Media.destroy({ where: { id: mediaId } });
     }
 
-    // Delete the user
     await user.destroy();
 
     res.json({ message: 'User deleted successfully' });
@@ -175,10 +166,6 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
 
 export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
-    console.log('=== UPDATE PROFILE REQUEST ===');
-    console.log('req.file:', req.file);
-    console.log('req.body:', req.body);
-    
     const user = await User.findByPk(req.userId);
 
     if (!user) {
@@ -209,48 +196,45 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
     if (yearLevel) user.yearLevel = parseInt(yearLevel);
     if (bio !== undefined) user.bio = bio;
 
-    // Handle profile picture upload
+    // Handle profile picture upload — save to DB as base64
     if (req.file) {
-      const profilePicturePath = `uploads/profiles/${req.file.filename}`;
-      user.profilePicture = profilePicturePath;
-      console.log('✅ Profile picture updated:', profilePicturePath);
-    } else {
-      console.log('⚠️ No file in request');
+      // Delete old media if stored in DB
+      if (user.profilePicture?.startsWith('media/')) {
+        const oldMediaId = user.profilePicture.split('/')[1];
+        await Media.destroy({ where: { id: oldMediaId } });
+      }
+
+      const processedBuffer = await sharp(req.file.buffer)
+        .resize(300, 300, { fit: 'cover' })
+        .jpeg({ quality: 85 })
+        .toBuffer();
+
+      const media = await Media.create({
+        data: processedBuffer.toString('base64'),
+        mimeType: 'image/jpeg',
+        filename: `profile-${user.id}-${Date.now()}.jpg`
+      });
+
+      user.profilePicture = `media/${media.id}`;
     }
 
-    console.log('User before save:', {
-      id: user.id,
-      username: user.username,
-      profilePicture: user.profilePicture
-    });
-
     await user.save();
-    
-    console.log('User after save:', {
-      id: user.id,
-      username: user.username,
-      profilePicture: user.profilePicture
-    });
-
-    const updatedUserData = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      profilePicture: user.profilePicture,
-      onlineStatus: user.onlineStatus,
-      department: user.department,
-      course: user.course,
-      yearLevel: user.yearLevel,
-      bio: user.bio
-    };
-
-    console.log('Sending updated user data:', updatedUserData);
 
     res.json({
       message: 'Profile updated successfully',
-      user: updatedUserData
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        profilePicture: user.profilePicture,
+        onlineStatus: user.onlineStatus,
+        department: user.department,
+        course: user.course,
+        yearLevel: user.yearLevel,
+        bio: user.bio
+      }
     });
   } catch (error) {
     console.error('Update profile error:', error);
@@ -299,24 +283,25 @@ export const uploadProfilePicture = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    if (user.profilePicture) {
-      const oldPath = path.join(process.env.UPLOAD_PATH || './uploads', user.profilePicture);
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
+    // Delete old media if stored in DB
+    if (user.profilePicture?.startsWith('media/')) {
+      const oldMediaId = user.profilePicture.split('/')[1];
+      await Media.destroy({ where: { id: oldMediaId } });
     }
 
-    const processedFileName = `processed-${req.file.filename}`;
-    const processedPath = path.join(path.dirname(req.file.path), processedFileName);
-
-    await sharp(req.file.path)
+    // Process image and store as base64
+    const processedBuffer = await sharp(req.file.buffer)
       .resize(300, 300, { fit: 'cover' })
       .jpeg({ quality: 85 })
-      .toFile(processedPath);
+      .toBuffer();
 
-    fs.unlinkSync(req.file.path);
+    const media = await Media.create({
+      data: processedBuffer.toString('base64'),
+      mimeType: 'image/jpeg',
+      filename: `profile-${user.id}-${Date.now()}.jpg`
+    });
 
-    user.profilePicture = `profiles/${processedFileName}`;
+    user.profilePicture = `media/${media.id}`;
     await user.save();
 
     res.json({

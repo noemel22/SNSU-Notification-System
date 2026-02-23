@@ -49,6 +49,12 @@ class SocketService {
     }
   }
 
+  offNewMessage() {
+    if (this.socket) {
+      this.socket.off('new_message');
+    }
+  }
+
   onUserStatusChange(callback: (data: { userId: number; status: string }) => void) {
     if (this.socket) {
       this.socket.on('user_status_change', callback);
@@ -61,15 +67,13 @@ class SocketService {
     }
   }
 
-  emitTyping(recipientId: number) {
+  emitTyping(isTyping: boolean, recipientId?: number) {
     if (this.socket) {
-      this.socket.emit('typing', { recipientId });
-    }
-  }
-
-  emitStopTyping(recipientId: number) {
-    if (this.socket) {
-      this.socket.emit('stop_typing', { recipientId });
+      if (isTyping) {
+        this.socket.emit('typing', { recipientId });
+      } else {
+        this.socket.emit('stop_typing', { recipientId });
+      }
     }
   }
 

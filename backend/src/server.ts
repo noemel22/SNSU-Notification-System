@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { createServer } from 'http';
+// @ts-ignore
 import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
 import sequelize from './database/config';
@@ -13,10 +14,12 @@ import userRoutes from './routes/userRoutes';
 import notificationRoutes from './routes/notificationRoutes';
 import messageRoutes from './routes/messageRoutes';
 import classRoutes from './routes/classRoutes';
+import mediaRoutes from './routes/mediaRoutes';
 import User from './models/User';
 import Message from './models/Message';
 import Notification from './models/Notification';
 import Class from './models/Class';
+import Media from './models/Media';
 
 // Setup associations with cascade delete
 User.hasMany(Message, { foreignKey: 'senderId', as: 'sentMessages', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
@@ -46,13 +49,12 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/uploads', express.static(path.join(__dirname, '..', process.env.UPLOAD_PATH || 'uploads')));
-
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/classes', classRoutes);
+app.use('/api/media', mediaRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
@@ -65,23 +67,42 @@ const initializeDatabase = async () => {
     await sequelize.authenticate();
     console.log('Database connection established successfully.');
 
-    // Use sync() without alter for production stability
-    // Only create tables if they don't exist, don't alter existing ones
-    await sequelize.sync();
-    console.log('Database synchronized successfully.');
-    
-    // Add deletedFor column to messages table if it doesn't exist
-    try {
-      await sequelize.query(`
-        ALTER TABLE messages ADD COLUMN deletedFor TEXT DEFAULT NULL;
-      `);
-      console.log('Added deletedFor column to messages table.');
-    } catch (error: any) {
-      // Column might already exist, ignore error
-      if (!error.message.includes('duplicate column name')) {
-        console.log('deletedFor column already exists or error:', error.message);
+    const isPostgres = (process.env.DB_TYPE || 'sqlite') === 'postgres';
+
+    if (!isPostgres) {
+      // Clean up any leftover backup tables from previous failed syncs (SQLite only)
+      try {
+        await sequelize.query('DROP TABLE IF EXISTS users_backup;');
+        await sequelize.query('DROP TABLE IF EXISTS notifications_backup;');
+        await sequelize.query('DROP TABLE IF EXISTS messages_backup;');
+        await sequelize.query('DROP TABLE IF EXISTS classes_backup;');
+        console.log('Cleaned up backup tables.');
+      } catch (cleanError) {
+        // Ignore cleanup errors
       }
     }
+
+    // Sync models to database
+    await sequelize.sync({ force: false });
+    console.log('Database synchronized successfully.');
+
+    // Add missing columns safely (works for both SQLite and PostgreSQL)
+    const addColumnSafely = async (table: string, column: string, type: string) => {
+      try {
+        if (isPostgres) {
+          await sequelize.query(`ALTER TABLE "${table}" ADD COLUMN IF NOT EXISTS "${column}" ${type};`);
+        } else {
+          await sequelize.query(`ALTER TABLE ${table} ADD COLUMN ${column} ${type};`);
+        }
+        console.log(`Ensured ${column} column exists on ${table} table.`);
+      } catch (error: any) {
+        // Column already exists (SQLite doesn't support IF NOT EXISTS for columns)
+      }
+    };
+
+    await addColumnSafely('notifications', 'eventDate', 'TIMESTAMP DEFAULT NULL');
+    await addColumnSafely('notifications', 'thumbnailPath', 'VARCHAR(255) DEFAULT NULL');
+    await addColumnSafely('messages', 'deletedFor', 'TEXT DEFAULT NULL');
 
     // Create default admin account only if it doesn't exist
     const adminExists = await User.findOne({ where: { username: 'admin' } });

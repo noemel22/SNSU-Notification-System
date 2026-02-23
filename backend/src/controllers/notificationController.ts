@@ -1,10 +1,8 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import Notification from '../models/Notification';
+import Media from '../models/Media';
 import sharp from 'sharp';
-import path from 'path';
-import fs from 'fs';
-import { promises as fsPromises } from 'fs';
 
 export const getNotifications = async (req: AuthRequest, res: Response) => {
   try {
@@ -36,7 +34,7 @@ export const getNotificationById = async (req: AuthRequest, res: Response) => {
 
 export const createNotification = async (req: AuthRequest, res: Response) => {
   try {
-    const { title, content, type } = req.body;
+    const { title, content, type, eventDate } = req.body;
 
     if (!title || !content || !type) {
       return res.status(400).json({ error: 'Title, content, and type are required' });
@@ -49,37 +47,37 @@ export const createNotification = async (req: AuthRequest, res: Response) => {
 
     const notificationData: any = { title, content, type };
 
+    if (eventDate) {
+      notificationData.eventDate = new Date(eventDate);
+    }
+
+    // Handle image upload — store in DB as base64
     if (req.file) {
-      const originalPath = req.file.path;
-      const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
-      const imageName = `${uniqueName}${path.extname(req.file.originalname)}`;
-      const thumbnailName = `thumb_${imageName}`;
-
-      const imagePath = path.join(path.dirname(originalPath), imageName);
-      const thumbnailPath = path.join(path.dirname(originalPath), '..', 'thumbnails', thumbnailName);
-
-      const thumbnailDir = path.dirname(thumbnailPath);
-      if (!fs.existsSync(thumbnailDir)) {
-        fs.mkdirSync(thumbnailDir, { recursive: true });
-      }
-
-      await sharp(originalPath)
+      // Process full-size image
+      const imageBuffer = await sharp(req.file.buffer)
         .jpeg({ quality: 85 })
-        .toFile(imagePath);
+        .toBuffer();
 
-      await sharp(originalPath)
+      const imageMedia = await Media.create({
+        data: imageBuffer.toString('base64'),
+        mimeType: 'image/jpeg',
+        filename: `notif-${Date.now()}.jpg`
+      });
+
+      // Process thumbnail
+      const thumbBuffer = await sharp(req.file.buffer)
         .resize(300, 300, { fit: 'cover' })
         .jpeg({ quality: 85 })
-        .toFile(thumbnailPath);
+        .toBuffer();
 
-      try {
-        await fsPromises.unlink(originalPath);
-      } catch (unlinkError: any) {
-        console.warn('Warning: Could not delete temporary file:', unlinkError.message);
-      }
+      const thumbMedia = await Media.create({
+        data: thumbBuffer.toString('base64'),
+        mimeType: 'image/jpeg',
+        filename: `thumb-${Date.now()}.jpg`
+      });
 
-      notificationData.imagePath = `notifications/${imageName}`;
-      notificationData.thumbnailPath = `thumbnails/${thumbnailName}`;
+      notificationData.imagePath = `media/${imageMedia.id}`;
+      notificationData.thumbnailPath = `media/${thumbMedia.id}`;
     }
 
     const notification = await Notification.create(notificationData);
@@ -102,64 +100,51 @@ export const updateNotification = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: 'Notification not found' });
     }
 
-    const { title, content, type } = req.body;
+    const { title, content, type, eventDate } = req.body;
 
     if (title) notification.title = title;
     if (content) notification.content = content;
     if (type) notification.type = type;
+    if (eventDate !== undefined) {
+      notification.eventDate = eventDate ? new Date(eventDate) : undefined;
+    }
 
+    // Handle new image upload
     if (req.file) {
-      if (notification.imagePath) {
-        const oldImagePath = path.join(process.env.UPLOAD_PATH || './uploads', notification.imagePath);
-        if (fs.existsSync(oldImagePath)) {
-          try {
-            await fsPromises.unlink(oldImagePath);
-          } catch (error: any) {
-            console.warn('Warning: Could not delete old image:', error.message);
-          }
-        }
+      // Delete old media records if they exist
+      if (notification.imagePath?.startsWith('media/')) {
+        const oldImageId = notification.imagePath.split('/')[1];
+        await Media.destroy({ where: { id: oldImageId } });
       }
-      if (notification.thumbnailPath) {
-        const oldThumbnailPath = path.join(process.env.UPLOAD_PATH || './uploads', notification.thumbnailPath);
-        if (fs.existsSync(oldThumbnailPath)) {
-          try {
-            await fsPromises.unlink(oldThumbnailPath);
-          } catch (error: any) {
-            console.warn('Warning: Could not delete old thumbnail:', error.message);
-          }
-        }
+      if (notification.thumbnailPath?.startsWith('media/')) {
+        const oldThumbId = notification.thumbnailPath.split('/')[1];
+        await Media.destroy({ where: { id: oldThumbId } });
       }
 
-      const originalPath = req.file.path;
-      const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(7)}`;
-      const imageName = `${uniqueName}${path.extname(req.file.originalname)}`;
-      const thumbnailName = `thumb_${imageName}`;
-
-      const imagePath = path.join(path.dirname(originalPath), imageName);
-      const thumbnailPath = path.join(path.dirname(originalPath), '..', 'thumbnails', thumbnailName);
-
-      const thumbnailDir = path.dirname(thumbnailPath);
-      if (!fs.existsSync(thumbnailDir)) {
-        fs.mkdirSync(thumbnailDir, { recursive: true });
-      }
-
-      await sharp(originalPath)
+      // Process and save new image
+      const imageBuffer = await sharp(req.file.buffer)
         .jpeg({ quality: 85 })
-        .toFile(imagePath);
+        .toBuffer();
 
-      await sharp(originalPath)
+      const imageMedia = await Media.create({
+        data: imageBuffer.toString('base64'),
+        mimeType: 'image/jpeg',
+        filename: `notif-${Date.now()}.jpg`
+      });
+
+      const thumbBuffer = await sharp(req.file.buffer)
         .resize(300, 300, { fit: 'cover' })
         .jpeg({ quality: 85 })
-        .toFile(thumbnailPath);
+        .toBuffer();
 
-      try {
-        await fsPromises.unlink(originalPath);
-      } catch (unlinkError: any) {
-        console.warn('Warning: Could not delete temporary file:', unlinkError.message);
-      }
+      const thumbMedia = await Media.create({
+        data: thumbBuffer.toString('base64'),
+        mimeType: 'image/jpeg',
+        filename: `thumb-${Date.now()}.jpg`
+      });
 
-      notification.imagePath = `notifications/${imageName}`;
-      notification.thumbnailPath = `thumbnails/${thumbnailName}`;
+      notification.imagePath = `media/${imageMedia.id}`;
+      notification.thumbnailPath = `media/${thumbMedia.id}`;
     }
 
     await notification.save();
@@ -182,26 +167,14 @@ export const deleteNotification = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: 'Notification not found' });
     }
 
-    if (notification.imagePath) {
-      const imagePath = path.join(process.env.UPLOAD_PATH || './uploads', notification.imagePath);
-      if (fs.existsSync(imagePath)) {
-        try {
-          await fsPromises.unlink(imagePath);
-        } catch (error: any) {
-          console.warn('Warning: Could not delete image:', error.message);
-        }
-      }
+    // Clean up media records
+    if (notification.imagePath?.startsWith('media/')) {
+      const imageId = notification.imagePath.split('/')[1];
+      await Media.destroy({ where: { id: imageId } });
     }
-
-    if (notification.thumbnailPath) {
-      const thumbnailPath = path.join(process.env.UPLOAD_PATH || './uploads', notification.thumbnailPath);
-      if (fs.existsSync(thumbnailPath)) {
-        try {
-          await fsPromises.unlink(thumbnailPath);
-        } catch (error: any) {
-          console.warn('Warning: Could not delete thumbnail:', error.message);
-        }
-      }
+    if (notification.thumbnailPath?.startsWith('media/')) {
+      const thumbId = notification.thumbnailPath.split('/')[1];
+      await Media.destroy({ where: { id: thumbId } });
     }
 
     await notification.destroy();

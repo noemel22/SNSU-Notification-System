@@ -24,7 +24,7 @@ import {
 } from '@ionic/react';
 import { saveOutline, imageOutline, trashOutline } from 'ionicons/icons';
 import { useHistory, useParams } from 'react-router-dom';
-import { notificationService } from '../services/api';
+import { notificationService, getMediaUrl } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import './CreateNotification.css';
 
@@ -53,7 +53,7 @@ const EditNotification: React.FC = () => {
       setIsLoadingData(true);
       const response = await notificationService.getNotificationById(parseInt(id));
       const notification = response.data;
-      
+
       setFormData({
         title: notification.title,
         content: notification.content,
@@ -61,7 +61,7 @@ const EditNotification: React.FC = () => {
       });
 
       if (notification.thumbnailPath) {
-        setExistingImage(`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/uploads/${notification.thumbnailPath}`);
+        setExistingImage(getMediaUrl(notification.thumbnailPath));
       }
     } catch (error: any) {
       setToast({
@@ -107,7 +107,7 @@ const EditNotification: React.FC = () => {
     if (formData.title.length < 5) newErrors.title = 'Title must be at least 5 characters';
     if (!formData.content.trim()) newErrors.content = 'Content is required';
     if (formData.content.length < 10) newErrors.content = 'Content must be at least 10 characters';
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -244,7 +244,7 @@ const EditNotification: React.FC = () => {
                   {/* Image Upload */}
                   <div className="form-field">
                     <IonLabel className="field-label">Image (Optional)</IonLabel>
-                    
+
                     {/* Existing Image */}
                     {existingImage && !imagePreview && (
                       <div className="image-preview">

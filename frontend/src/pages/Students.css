@@ -1,0 +1,347 @@
+/* Students Page Styles - Teacher View */
+.students-container {
+    padding: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Search Bar */
+ion-searchbar {
+    --background: #f8f9fa;
+    --border-radius: 12px;
+    --box-shadow: none;
+    --placeholder-color: #888;
+    --color: #1a1a2e;
+    padding: 8px 16px;
+}
+
+/* Summary Card */
+.summary-card {
+    background: linear-gradient(135deg, #4285f4 0%, #5a95f5 100%);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(66, 133, 244, 0.3);
+    margin: 0 0 20px 0;
+    overflow: hidden;
+}
+
+.summary-card ion-card-content {
+    padding: 20px;
+}
+
+.summary-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.summary-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.summary-icon ion-icon {
+    font-size: 32px;
+    color: white;
+}
+
+.summary-info h2 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-info .count {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.summary-info .subtitle {
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Student Card */
+.student-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 0 0 14px 0;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.student-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.student-card ion-card-content {
+    padding: 16px;
+}
+
+.student-card-content {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* Student Avatar */
+.student-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #34a853;
+    box-shadow: 0 4px 12px rgba(52, 168, 83, 0.2);
+    flex-shrink: 0;
+    position: relative;
+}
+
+.student-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.student-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #34a853 0%, #4ebc6a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    background: #34a853;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+/* Student Info */
+.student-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.student-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.student-name {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.online-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.student-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-row ion-icon {
+    font-size: 16px;
+    color: #4285f4;
+    flex-shrink: 0;
+}
+
+.detail-row span {
+    font-size: 13px;
+    color: #555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.course-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.course-badge ion-icon {
+    color: #2e7d32;
+}
+
+/* Student Actions */
+.student-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.student-actions ion-button {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --border-radius: 8px;
+    margin: 0;
+    height: 36px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-state-icon {
+    width: 100px;
+    height: 100px;
+    background: #f0f4f8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.empty-state-icon ion-icon {
+    font-size: 48px;
+    color: #ccc;
+}
+
+.empty-state h2 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 14px;
+    color: #888;
+}
+
+/* Skeleton Loading */
+.skeleton-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 0 0 14px 0;
+    overflow: hidden;
+}
+
+.skeleton-card ion-card-content {
+    padding: 16px;
+}
+
+.skeleton-content {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+ion-skeleton-text {
+    border-radius: 8px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .student-card {
+        background: #ffffff !important;
+        --background: #ffffff !important;
+    }
+
+    .student-name {
+        color: #1a1a2e !important;
+    }
+
+    .detail-row span {
+        color: #555 !important;
+    }
+
+    .empty-state h2 {
+        color: #1a1a2e !important;
+    }
+
+    .empty-state p {
+        color: #888 !important;
+    }
+
+    ion-searchbar {
+        --background: #f8f9fa;
+        --color: #1a1a2e;
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .students-container {
+        padding: 12px;
+    }
+
+    .student-card ion-card-content {
+        padding: 14px;
+    }
+
+    .student-avatar {
+        width: 54px;
+        height: 54px;
+    }
+
+    .student-name {
+        font-size: 15px;
+    }
+
+    .detail-row span {
+        font-size: 12px;
+    }
+
+    .summary-info .count {
+        font-size: 28px;
+    }
+}

@@ -1,3 +1,9 @@
+/* Sidebar Menu Background - Required for white text visibility */
+ion-menu ion-content {
+  --background: #1a1a2e;
+  background: #1a1a2e;
+}
+
 /* Sidebar Header */
 .sidebar-header {
   display: flex;
@@ -284,6 +290,7 @@ ion-menu::part(container) {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);

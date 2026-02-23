@@ -30,7 +30,7 @@ import {
 } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { notificationService } from '../services/api';
+import { notificationService, getMediaUrl } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import './Notifications.css';
 
@@ -86,7 +86,7 @@ const Notifications: React.FC = () => {
 
     // Filter by search text
     if (searchText) {
-      filtered = filtered.filter(n => 
+      filtered = filtered.filter(n =>
         n.title.toLowerCase().includes(searchText.toLowerCase()) ||
         n.content.toLowerCase().includes(searchText.toLowerCase())
       );
@@ -166,7 +166,7 @@ const Notifications: React.FC = () => {
               </IonButton>
             </IonButtons>
           </IonToolbar>
-          
+
           <IonToolbar>
             <IonSearchbar
               value={searchText}
@@ -265,13 +265,13 @@ const Notifications: React.FC = () => {
                     <h2>{notif.title}</h2>
                     <div className="notification-content">
                       <p>
-                        {isExpanded(notif.id) 
-                          ? notif.content 
+                        {isExpanded(notif.id)
+                          ? notif.content
                           : `${notif.content.substring(0, 150)}${shouldShowToggle(notif.content) ? '...' : ''}`
                         }
                       </p>
                       {shouldShowToggle(notif.content) && (
-                        <button 
+                        <button
                           className="show-more-btn"
                           onClick={(e) => toggleExpanded(notif.id, e)}
                         >
@@ -282,7 +282,7 @@ const Notifications: React.FC = () => {
 
                     {notif.thumbnailPath && (
                       <img
-                        src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/uploads/${notif.thumbnailPath}`}
+                        src={getMediaUrl(notif.thumbnailPath)}
                         alt={notif.title}
                         className="notification-image"
                       />

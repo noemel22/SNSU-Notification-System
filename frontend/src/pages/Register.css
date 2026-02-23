@@ -1,5 +1,6 @@
 .register-page {
   --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --keyboard-offset: 0 !important;
 }
 
 .register-page ion-content {
@@ -7,91 +8,100 @@
   --padding-bottom: 0;
   --padding-start: 0;
   --padding-end: 0;
+  --keyboard-offset: 0 !important;
 }
 
 .register-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
-  padding: clamp(16px, 5vw, 40px);
+  padding: 20px 16px;
   animation: fadeIn 0.6s ease-in-out;
   width: 100%;
   box-sizing: border-box;
 }
 
+/* Card Styles */
 .register-container ion-card {
   width: 100%;
-  max-width: 550px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  border-radius: clamp(12px, 3vw, 20px);
+  max-width: 450px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
   overflow: hidden;
   animation: slideUp 0.8s ease-out 0.2s both;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.98);
+  background: #ffffff !important;
+  --background: #ffffff !important;
   margin: 0 auto;
 }
 
 .register-container ion-card-header {
-  padding: clamp(16px, 4vw, 24px);
+  padding: 16px 20px 8px 20px;
+  background: #ffffff !important;
+  --background: #ffffff !important;
 }
 
 .register-container ion-card-content {
-  padding: clamp(16px, 4vw, 24px);
+  padding: 8px 20px 20px 20px;
+  background: #ffffff !important;
+  --background: #ffffff !important;
 }
 
 .register-container ion-card-title {
   text-align: center;
-  font-size: clamp(24px, 5vw, 28px);
+  font-size: 22px;
   font-weight: bold;
-  color: var(--snsu-primary, #667eea);
-  margin-bottom: 8px;
+  color: #1a1a2e !important;
+  margin-bottom: 4px;
 }
 
 .register-container .subtitle {
   text-align: center;
-  font-size: clamp(13px, 3vw, 15px);
-  color: var(--ion-color-medium);
+  font-size: 13px;
+  color: #666 !important;
   margin: 0;
   padding: 0;
 }
 
-/* Form Fields Container */
+/* Form Fields */
 .form-field {
-  margin-bottom: clamp(16px, 3vw, 18px);
+  margin-bottom: 12px;
 }
 
-/* Field Labels (Above Input) */
 .field-label {
   display: block;
-  font-size: clamp(13px, 3vw, 14px);
+  font-size: 13px;
   font-weight: 600;
-  color: var(--ion-color-dark);
+  color: #333 !important;
   margin-bottom: 6px;
   padding-left: 2px;
 }
 
-/* Input Items */
+/* Compact Input Items */
 .register-container .input-item {
-  --border-width: 2px;
-  --border-color: #d0d0d0;
+  --border-width: 1px;
+  --border-color: #e0e0e0;
   --border-radius: 8px;
-  --padding-start: 14px;
-  --padding-end: 14px;
-  --min-height: 42px;
-  --background: #f5f5f5 !important;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --min-height: 40px;
+  --background: #f8f8f8 !important;
   --color: #000000 !important;
   --highlight-color-focused: var(--ion-color-primary);
-  background: #f5f5f5 !important;
-  border: 2px solid #d0d0d0;
+  background: #f8f8f8 !important;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-top: 0;
   transition: all 0.2s ease;
+  height: 40px;
 }
 
 .register-container .input-item ion-input {
   --color: #000000 !important;
   color: #000000 !important;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  height: 100%;
 }
 
 .register-container .input-item ion-input input {
@@ -120,7 +130,7 @@
 .register-container .input-item:focus-within {
   --border-color: var(--ion-color-primary);
   border-color: var(--ion-color-primary);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.15);
 }
 
 .register-container .input-item.error {
@@ -129,11 +139,11 @@
 }
 
 .register-container form ion-input {
-  font-size: clamp(14px, 3vw, 15px);
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+  font-size: 14px;
+  --padding-top: 0;
+  --padding-bottom: 0;
   --color: #000000 !important;
-  --placeholder-color: #666666 !important;
+  --placeholder-color: #999 !important;
   --placeholder-opacity: 1 !important;
 }
 
@@ -143,30 +153,25 @@
 }
 
 .register-container form ion-input::part(native)::placeholder {
-  color: #666666 !important;
+  color: #999 !important;
   opacity: 1 !important;
-  font-weight: 400;
-}
-
-.register-container form ion-input input {
-  color: #000000 !important;
-  background: transparent !important;
 }
 
 /* Select Items */
 .register-container .select-item {
-  --min-height: 42px;
-  --background: #f5f5f5 !important;
-  background: #f5f5f5 !important;
+  --min-height: 40px;
+  height: 40px;
+  --background: #f8f8f8 !important;
+  background: #f8f8f8 !important;
 }
 
 .register-container ion-select {
-  font-size: clamp(14px, 3vw, 15px);
+  font-size: 14px;
   font-weight: 500;
   width: 100%;
   max-width: 100%;
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+  --padding-top: 0;
+  --padding-bottom: 0;
 }
 
 .register-container ion-select::part(text) {
@@ -174,16 +179,15 @@
 }
 
 .register-container ion-select::part(placeholder) {
-  color: #666666 !important;
+  color: #999 !important;
 }
 
 /* Password Toggle Icon */
 .password-toggle {
-  font-size: 22px;
-  color: #666;
+  font-size: 20px;
+  color: #888;
   cursor: pointer;
-  padding: 8px;
-  margin-right: -8px;
+  padding: 6px;
   transition: color 0.2s ease;
 }
 
@@ -191,263 +195,212 @@
   color: var(--ion-color-primary);
 }
 
-.password-toggle:active {
-  transform: scale(0.95);
-}
-
 /* Helper Text */
 .helper-text {
   display: block;
-  font-size: clamp(12px, 2.5vw, 13px);
-  color: #666;
-  margin-top: 6px;
-  padding-left: 4px;
-  font-weight: 400;
+  font-size: 11px;
+  color: #888;
+  margin-top: 4px;
+  padding-left: 2px;
 }
 
 /* Error Messages */
 .error-message {
   display: block;
-  font-size: clamp(12px, 2.5vw, 13px);
+  font-size: 12px;
   color: var(--ion-color-danger);
-  margin-top: 6px;
-  padding-left: 4px;
+  margin-top: 4px;
+  padding-left: 2px;
   font-weight: 500;
 }
 
 .global-error {
   display: block;
-  font-size: clamp(13px, 3vw, 14px);
+  font-size: 13px;
   color: var(--ion-color-danger);
   background: rgba(var(--ion-color-danger-rgb), 0.1);
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 16px 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin: 12px 0;
   font-weight: 500;
   text-align: center;
-  border-left: 4px solid var(--ion-color-danger);
+  border-left: 3px solid var(--ion-color-danger);
 }
 
 /* Register Button */
 .register-button {
   --border-radius: 8px;
-  height: clamp(42px, 9vw, 46px);
-  font-size: clamp(15px, 3.5vw, 16px);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  margin-top: clamp(18px, 3vw, 24px);
+  height: 42px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-top: 16px;
   text-transform: none;
-}
-
-.register-button::part(native) {
-  font-weight: 700;
 }
 
 /* Login Link */
 .login-link {
   display: block;
-  margin-top: clamp(16px, 3vw, 20px);
-  font-size: clamp(14px, 3vw, 15px);
+  margin-top: 14px;
+  font-size: 13px;
 }
 
 .login-link p {
   margin: 0;
-  color: var(--ion-color-medium);
+  color: #666 !important;
 }
 
 .register-container a {
-  color: var(--snsu-primary, #667eea);
+  color: var(--ion-color-primary);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s ease;
 }
 
 .register-container a:hover {
   text-decoration: underline;
-  color: var(--snsu-secondary, #764ba2);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Role-specific fields animation */
-.register-container ion-item {
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Responsive Design - Tablets and below */
-@media (max-width: 768px) {
-  .register-container {
-    padding: 20px 16px;
-  }
-  
-  .register-container ion-card {
-    max-width: 100%;
-    margin: 0;
-  }
-}
-
+/* Mobile Responsive */
 @media (max-width: 480px) {
   .register-container {
     padding: 16px 12px;
-    justify-content: flex-start;
-    padding-top: clamp(20px, 5vh, 40px);
   }
-  
+
   .register-container ion-card {
-    border-radius: 16px;
+    border-radius: 12px;
   }
-  
-  .register-container ion-card-header,
+
+  .register-container ion-card-header {
+    padding: 14px 16px 6px 16px;
+  }
+
   .register-container ion-card-content {
-    padding: 16px;
+    padding: 6px 16px 16px 16px;
   }
-  
-  .register-container form ion-item {
+
+  .register-container ion-card-title {
+    font-size: 20px;
+  }
+
+  .form-field {
     margin-bottom: 10px;
+  }
+
+  .register-container .input-item {
+    height: 38px;
+    --min-height: 38px;
   }
 }
 
 /* Extra small devices */
 @media (max-width: 375px) {
   .register-container {
-    padding: 12px 8px;
-    padding-top: clamp(16px, 4vh, 32px);
+    padding: 12px 10px;
   }
-  
+
   .register-container ion-card-header,
   .register-container ion-card-content {
-    padding: 12px;
-  }
-  
-  .register-container form ion-item {
-    margin-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 }
 
 /* Landscape Mode */
-@media (max-height: 600px) and (orientation: landscape) {
+@media (max-height: 550px) and (orientation: landscape) {
   .register-container {
     padding: 10px;
-    justify-content: flex-start;
-    padding-top: 10px;
+    min-height: auto;
   }
-  
+
   .register-container ion-card {
     max-height: calc(100vh - 20px);
     overflow-y: auto;
   }
-  
-  .register-container ion-card-header,
-  .register-container ion-card-content {
-    padding: 12px;
-  }
-  
-  .register-container form ion-item {
-    margin-bottom: 6px;
-    --min-height: 44px;
-  }
-  
-  .register-container ion-button {
-    margin-top: 8px;
-    height: 40px;
-  }
-}
 
-/* Very short landscape (like phones in landscape) */
-@media (max-height: 400px) and (orientation: landscape) {
-  .register-container ion-card-title {
-    font-size: 20px;
+  .register-container ion-card-header {
+    padding: 8px 14px 4px 14px;
   }
-  
-  .register-container ion-card-header,
+
   .register-container ion-card-content {
-    padding: 8px;
+    padding: 4px 14px 12px 14px;
   }
-  
-  .register-container form ion-item {
-    margin-bottom: 4px;
-    --min-height: 40px;
+
+  .register-container ion-card-title {
+    font-size: 18px;
   }
-  
-  .register-container ion-button {
+
+  .form-field {
+    margin-bottom: 8px;
+  }
+
+  .register-container .input-item {
     height: 36px;
-    margin-top: 6px;
+    --min-height: 36px;
+  }
+
+  .register-button {
+    height: 36px;
+    margin-top: 10px;
   }
 }
 
-/* Focus States */
-.register-container ion-input:focus-within,
-.register-container ion-select:focus-within {
-  --highlight-color: var(--snsu-primary, #667eea);
-}
-
-/* Loading State */
-.register-container ion-button[disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Error States */
-.register-container ion-item.item-has-error {
-  --border-color: var(--ion-color-danger);
-}
-
-/* Success Feedback */
-.register-container ion-item.item-has-success {
-  --border-color: var(--ion-color-success);
-}
-
-/* Dark Mode Support */
+/* Dark Mode Support - Keep register card white */
 @media (prefers-color-scheme: dark) {
-  .register-container ion-card {
-    background: rgba(30, 30, 30, 0.95);
+
+  .register-container ion-card,
+  .register-container ion-card-header,
+  .register-container ion-card-content {
+    background: #ffffff !important;
+    --background: #ffffff !important;
   }
-  
+
   .register-container ion-card-title {
-    color: #7c8cff;
+    color: #1a1a2e !important;
   }
-}
 
-/* Touch Feedback */
-@media (hover: none) and (pointer: coarse) {
-  .register-container ion-button {
-    min-height: 48px;
+  .register-container .subtitle {
+    color: #666 !important;
   }
-  
-  .register-container ion-item {
-    min-height: 56px;
-  }
-}
 
-/* Print Styles */
-@media print {
-  .register-page {
-    display: none;
+  .register-container .field-label {
+    color: #333 !important;
+  }
+
+  .register-container .input-item {
+    --background: #f8f8f8 !important;
+    background: #f8f8f8 !important;
+  }
+
+  .register-container .input-item ion-input,
+  .register-container .input-item ion-select {
+    --color: #000000 !important;
+    color: #000000 !important;
+  }
+
+  .login-link p {
+    color: #666 !important;
   }
 }

@@ -6,6 +6,8 @@
 
 .notification-detail-card {
   margin-bottom: 20px;
+  background: #ffffff !important;
+  --background: #ffffff !important;
 }
 
 .notification-detail-card.notification-emergency {
@@ -55,7 +57,7 @@
   font-size: 28px;
   font-weight: 700;
   margin: 20px 0;
-  color: var(--ion-color-dark);
+  color: #1a1a2e !important;
   line-height: 1.3;
 }
 
@@ -73,7 +75,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--ion-color-medium);
+  color: #666 !important;
   font-size: 14px;
 }
 
@@ -104,13 +106,13 @@
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 15px;
-  color: var(--ion-color-dark);
+  color: #1a1a2e !important;
 }
 
 .notification-content-full p {
   font-size: 16px;
   line-height: 1.8;
-  color: var(--ion-color-step-600);
+  color: #555 !important;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -142,10 +144,6 @@
   background-color: rgba(var(--ion-color-primary-rgb), 0.1);
 }
 
-.show-more-btn-detail:active {
-  background-color: rgba(var(--ion-color-primary-rgb), 0.2);
-}
-
 .detail-actions {
   margin-top: 30px;
   padding-top: 20px;
@@ -162,13 +160,14 @@
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  color: var(--ion-color-medium);
+  color: #888;
 }
 
 .empty-state h2 {
   font-size: 20px;
   font-weight: 600;
   margin: 12px 0;
+  color: #666 !important;
 }
 
 @media (max-width: 768px) {
@@ -196,5 +195,30 @@
 @media (min-width: 768px) {
   .detail-actions {
     flex-direction: row;
+  }
+}
+
+/* Dark Mode - Keep cards white */
+@media (prefers-color-scheme: dark) {
+  .notification-detail-card {
+    background: #ffffff !important;
+    --background: #ffffff !important;
+  }
+
+  .notification-title,
+  .notification-content-full h3 {
+    color: #1a1a2e !important;
+  }
+
+  .notification-content-full p {
+    color: #555 !important;
+  }
+
+  .meta-item {
+    color: #666 !important;
+  }
+
+  .empty-state h2 {
+    color: #666 !important;
   }
 }

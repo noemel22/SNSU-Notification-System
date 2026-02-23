@@ -13,6 +13,7 @@ interface User {
   department?: string;
   course?: string;
   yearLevel?: number;
+  bio?: string;
 }
 
 interface AuthContextType {
@@ -79,12 +80,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = () => {
     authService.logout().catch(console.error);
-    
+
     setToken(null);
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    
+
     socketService.disconnect();
   };
 

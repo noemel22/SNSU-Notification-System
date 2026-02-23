@@ -19,7 +19,7 @@ import {
 import { createOutline, trashOutline, calendarOutline, timeOutline } from 'ionicons/icons';
 import { useHistory, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { notificationService } from '../services/api';
+import { notificationService, getMediaUrl } from '../services/api';
 import Sidebar from '../components/Sidebar';
 import './NotificationDetail.css';
 
@@ -54,10 +54,10 @@ const NotificationDetail: React.FC = () => {
       const response = await notificationService.getNotificationById(parseInt(id));
       setNotification(response.data);
     } catch (error: any) {
-      setToast({ 
-        show: true, 
-        message: error.response?.data?.error || 'Error loading notification', 
-        color: 'danger' 
+      setToast({
+        show: true,
+        message: error.response?.data?.error || 'Error loading notification',
+        color: 'danger'
       });
       setTimeout(() => history.push('/notifications'), 2000);
     } finally {
@@ -213,7 +213,7 @@ const NotificationDetail: React.FC = () => {
                 {notification.imagePath && (
                   <div className="notification-image-container">
                     <img
-                      src={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/uploads/${notification.imagePath}`}
+                      src={getMediaUrl(notification.imagePath)}
                       alt={notification.title}
                       className="notification-detail-image"
                     />
@@ -225,7 +225,7 @@ const NotificationDetail: React.FC = () => {
                   <h3>Details</h3>
                   <p className="content-text">{getDisplayContent(notification.content)}</p>
                   {shouldShowContentToggle(notification.content) && (
-                    <button 
+                    <button
                       className="show-more-btn-detail"
                       onClick={() => setIsContentExpanded(!isContentExpanded)}
                     >

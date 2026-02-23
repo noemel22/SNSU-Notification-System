@@ -11,16 +11,25 @@ import {
   IonCardContent,
   IonIcon,
   IonBadge,
-  IonAvatar,
   IonSkeletonText,
   IonSearchbar,
   IonRefresher,
   IonRefresherContent,
-  IonToast
+  IonToast,
+  IonButton,
+  useIonRouter
 } from '@ionic/react';
-import { peopleOutline, mailOutline, callOutline, schoolOutline, personCircleOutline } from 'ionicons/icons';
+import {
+  peopleOutline,
+  mailOutline,
+  callOutline,
+  schoolOutline,
+  chatbubbleOutline,
+  personCircleOutline
+} from 'ionicons/icons';
 import Sidebar from '../components/Sidebar';
-import { userService } from '../services/api';
+import { userService, getMediaUrl } from '../services/api';
+import './Students.css';
 
 interface Student {
   id: number;
@@ -39,6 +48,7 @@ const Students: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   const [toast, setToast] = useState({ show: false, message: '', color: 'success' });
+  const router = useIonRouter();
 
   useEffect(() => {
     loadStudents();
@@ -79,6 +89,17 @@ const Students: React.FC = () => {
     event.detail.complete();
   };
 
+  const handleMessageStudent = (username: string) => {
+    // Navigate to messages with the student mentioned
+    router.push(`/messages?mention=${encodeURIComponent(username)}`, 'forward', 'push');
+  };
+
+  const getProfilePictureUrl = (profilePicture: string | undefined) => {
+    if (!profilePicture) return null;
+    if (profilePicture.startsWith('http')) return profilePicture;
+    return getMediaUrl(profilePicture);
+  };
+
   return (
     <>
       <Sidebar />
@@ -88,13 +109,13 @@ const Students: React.FC = () => {
             <IonButtons slot="start">
               <IonMenuButton />
             </IonButtons>
-            <IonTitle>Students</IonTitle>
+            <IonTitle>My Students</IonTitle>
           </IonToolbar>
           <IonToolbar>
             <IonSearchbar
               value={searchText}
               onIonInput={(e: any) => setSearchText(e.target.value)}
-              placeholder="Search students..."
+              placeholder="Search by name, email, or course..."
               animated
             />
           </IonToolbar>
@@ -105,97 +126,133 @@ const Students: React.FC = () => {
             <IonRefresherContent />
           </IonRefresher>
 
-          <div style={{ padding: '16px', maxWidth: '1200px', margin: '0 auto' }}>
+          <div className="students-container">
             {/* Summary Card */}
-            <IonCard>
-              <IonCardContent style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <IonIcon icon={peopleOutline} style={{ fontSize: '48px', color: '#667eea' }} />
-                <div>
-                  <h2 style={{ margin: '0 0 4px 0', fontSize: '18px', fontWeight: '600' }}>
-                    Total Students
-                  </h2>
-                  <p style={{ margin: 0, fontSize: '24px', fontWeight: '700', color: '#667eea' }}>
-                    {filteredStudents.length}
-                  </p>
+            <IonCard className="summary-card">
+              <IonCardContent>
+                <div className="summary-content">
+                  <div className="summary-icon">
+                    <IonIcon icon={peopleOutline} />
+                  </div>
+                  <div className="summary-info">
+                    <h2>Total Students</h2>
+                    <p className="count">{isLoading ? '...' : filteredStudents.length}</p>
+                    <p className="subtitle">
+                      {searchText
+                        ? `Showing ${filteredStudents.length} of ${students.length} students`
+                        : 'Active in your classes'
+                      }
+                    </p>
+                  </div>
                 </div>
               </IonCardContent>
             </IonCard>
 
             {/* Students List */}
             {isLoading ? (
+              // Skeleton Loading
               Array.from({ length: 5 }).map((_, index) => (
-                <IonCard key={index}>
+                <IonCard key={index} className="skeleton-card">
                   <IonCardContent>
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                      <IonSkeletonText animated style={{ width: '60px', height: '60px', borderRadius: '50%' }} />
+                    <div className="skeleton-content">
+                      <IonSkeletonText animated style={{ width: '64px', height: '64px', borderRadius: '50%' }} />
                       <div style={{ flex: 1 }}>
-                        <IonSkeletonText animated style={{ width: '40%', height: '20px' }} />
-                        <IonSkeletonText animated style={{ width: '60%', height: '16px', marginTop: '8px' }} />
+                        <IonSkeletonText animated style={{ width: '50%', height: '20px', marginBottom: '10px' }} />
+                        <IonSkeletonText animated style={{ width: '70%', height: '16px', marginBottom: '6px' }} />
+                        <IonSkeletonText animated style={{ width: '60%', height: '16px' }} />
                       </div>
                     </div>
                   </IonCardContent>
                 </IonCard>
               ))
             ) : filteredStudents.length === 0 ? (
-              <IonCard>
-                <IonCardContent style={{ textAlign: 'center', padding: '60px 20px' }}>
-                  <IonIcon icon={peopleOutline} style={{ fontSize: '80px', color: '#ccc', marginBottom: '20px' }} />
-                  <h2 style={{ fontSize: '20px', fontWeight: '600', margin: '0 0 12px 0' }}>No Students Found</h2>
-                  <p style={{ color: '#666', fontSize: '15px' }}>
-                    {searchText ? 'Try adjusting your search' : 'No students are registered yet'}
-                  </p>
+              // Empty State
+              <IonCard className="student-card">
+                <IonCardContent>
+                  <div className="empty-state">
+                    <div className="empty-state-icon">
+                      <IonIcon icon={peopleOutline} />
+                    </div>
+                    <h2>No Students Found</h2>
+                    <p>
+                      {searchText
+                        ? 'Try adjusting your search terms'
+                        : 'No students are currently registered in the system'
+                      }
+                    </p>
+                  </div>
                 </IonCardContent>
               </IonCard>
             ) : (
+              // Student Cards
               filteredStudents.map((student) => (
-                <IonCard key={student.id}>
+                <IonCard key={student.id} className="student-card">
                   <IonCardContent>
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                    <div className="student-card-content">
                       {/* Avatar */}
-                      <IonAvatar style={{ width: '60px', height: '60px', flexShrink: 0 }}>
+                      <div className="student-avatar">
                         {student.profilePicture ? (
-                          <img 
-                            src={student.profilePicture.startsWith('http') 
-                              ? student.profilePicture 
-                              : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${student.profilePicture}`
-                            } 
+                          <img
+                            src={getProfilePictureUrl(student.profilePicture)!}
                             alt={student.username}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e: any) => {
+                              e.target.style.display = 'none';
+                              e.target.nextSibling.style.display = 'flex';
+                            }}
                           />
-                        ) : (
-                          <IonIcon icon={personCircleOutline} style={{ fontSize: '60px', color: '#667eea' }} />
-                        )}
-                      </IonAvatar>
+                        ) : null}
+                        <div
+                          className="student-avatar-placeholder"
+                          style={{ display: student.profilePicture ? 'none' : 'flex' }}
+                        >
+                          {student.username[0].toUpperCase()}
+                        </div>
+                        {student.onlineStatus && <div className="online-indicator" />}
+                      </div>
 
                       {/* Info */}
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>{student.username}</h3>
+                      <div className="student-info">
+                        <div className="student-name-row">
+                          <h3 className="student-name">{student.username}</h3>
                           {student.onlineStatus && (
-                            <IonBadge color="success" style={{ fontSize: '10px' }}>Online</IonBadge>
+                            <IonBadge color="success" className="online-badge">Online</IonBadge>
                           )}
                         </div>
 
-                        {student.course && (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                            <IonIcon icon={schoolOutline} style={{ fontSize: '16px', color: '#666' }} />
-                            <span style={{ fontSize: '14px', color: '#666' }}>
-                              {student.course} {student.yearLevel && `- Year ${student.yearLevel}`}
-                            </span>
+                        <div className="student-details">
+                          {student.course && (
+                            <div className="course-badge">
+                              <IonIcon icon={schoolOutline} />
+                              <span>
+                                {student.course}
+                                {student.yearLevel && ` - Year ${student.yearLevel}`}
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="detail-row">
+                            <IonIcon icon={mailOutline} />
+                            <span>{student.email}</span>
                           </div>
-                        )}
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                          <IonIcon icon={mailOutline} style={{ fontSize: '16px', color: '#666' }} />
-                          <span style={{ fontSize: '14px', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {student.email}
-                          </span>
+                          <div className="detail-row">
+                            <IonIcon icon={callOutline} />
+                            <span>{student.phone || 'No phone number'}</span>
+                          </div>
                         </div>
+                      </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <IonIcon icon={callOutline} style={{ fontSize: '16px', color: '#666' }} />
-                          <span style={{ fontSize: '14px', color: '#666' }}>{student.phone}</span>
-                        </div>
+                      {/* Actions */}
+                      <div className="student-actions">
+                        <IonButton
+                          fill="outline"
+                          color="primary"
+                          size="small"
+                          onClick={() => handleMessageStudent(student.username)}
+                        >
+                          <IonIcon icon={chatbubbleOutline} slot="start" />
+                          Message
+                        </IonButton>
                       </div>
                     </div>
                   </IonCardContent>

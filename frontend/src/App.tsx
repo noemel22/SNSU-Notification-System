@@ -18,14 +18,9 @@ import CreateUser from './pages/CreateUser';
 import EditUser from './pages/EditUser';
 import Messages from './pages/Messages';
 import Analytics from './pages/Analytics';
-import Reports from './pages/Reports';
 import Help from './pages/Help';
-import MyCourses from './pages/MyCourses';
 import Calendar from './pages/Calendar';
-import Resources from './pages/Resources';
-import MyClasses from './pages/MyClasses';
 import Students from './pages/Students';
-import Announcements from './pages/Announcements';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -48,6 +43,9 @@ import './theme/variables.css';
 
 /* Responsive styles */
 import './styles/responsive.css';
+
+/* Dark mode visibility fixes */
+import './styles/dark-mode-fix.css';
 
 setupIonicReact();
 
@@ -88,16 +86,11 @@ const AppRoutes: React.FC = () => {
         <PrivateRoute exact path="/manage-users" component={ManageUsers} />
         <PrivateRoute exact path="/create-user" component={CreateUser} />
         <PrivateRoute exact path="/edit-user/:id" component={EditUser} />
-        <PrivateRoute exact path="/messages" component={Messages} />
+        <PrivateRoute path="/messages" component={Messages} />
         <PrivateRoute exact path="/analytics" component={Analytics} />
-        <PrivateRoute exact path="/reports" component={Reports} />
         <PrivateRoute exact path="/help" component={Help} />
-        <PrivateRoute exact path="/courses" component={MyCourses} />
         <PrivateRoute exact path="/calendar" component={Calendar} />
-        <PrivateRoute exact path="/resources" component={Resources} />
-        <PrivateRoute exact path="/classes" component={MyClasses} />
         <PrivateRoute exact path="/students" component={Students} />
-        <PrivateRoute exact path="/announcements" component={Announcements} />
         <Route exact path="/">
           <Redirect to="/dashboard" />
         </Route>

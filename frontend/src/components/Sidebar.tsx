@@ -25,12 +25,9 @@ import {
   logOutOutline,
   addCircleOutline,
   statsChartOutline,
-  bookOutline,
   calendarOutline,
-  documentTextOutline,
-  schoolOutline,
-  newspaperOutline,
-  helpCircleOutline
+  helpCircleOutline,
+  arrowBackOutline
 } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -55,31 +52,27 @@ const Sidebar: React.FC = () => {
     { title: 'Dashboard', path: '/dashboard', icon: homeOutline },
     { title: 'Notifications', path: '/notifications', icon: notificationsOutline },
     { title: 'Create Notification', path: '/create-notification', icon: addCircleOutline },
+    { title: 'Calendar', path: '/calendar', icon: calendarOutline },
     { title: 'Manage Users', path: '/manage-users', icon: peopleOutline },
     { title: 'Messages', path: '/messages', icon: chatbubblesOutline },
     { title: 'Analytics', path: '/analytics', icon: statsChartOutline },
-    { title: 'Reports', path: '/reports', icon: documentTextOutline },
   ];
 
   // Teacher Navigation Items
   const teacherNavItems = [
     { title: 'Dashboard', path: '/dashboard', icon: homeOutline },
     { title: 'Notifications', path: '/notifications', icon: notificationsOutline },
-    { title: 'My Classes', path: '/classes', icon: schoolOutline },
+    { title: 'Calendar', path: '/calendar', icon: calendarOutline },
     { title: 'Students', path: '/students', icon: peopleOutline },
     { title: 'Messages', path: '/messages', icon: chatbubblesOutline },
-    { title: 'Announcements', path: '/announcements', icon: newspaperOutline },
-    { title: 'Calendar', path: '/calendar', icon: calendarOutline },
   ];
 
   // Student Navigation Items
   const studentNavItems = [
     { title: 'Dashboard', path: '/dashboard', icon: homeOutline },
     { title: 'Notifications', path: '/notifications', icon: notificationsOutline },
-    { title: 'My Courses', path: '/courses', icon: bookOutline },
-    { title: 'Messages', path: '/messages', icon: chatbubblesOutline },
     { title: 'Calendar', path: '/calendar', icon: calendarOutline },
-    { title: 'Resources', path: '/resources', icon: documentTextOutline },
+    { title: 'Messages', path: '/messages', icon: chatbubblesOutline },
   ];
 
   const getNavigationItems = () => {
@@ -101,6 +94,11 @@ const Sidebar: React.FC = () => {
     <IonMenu contentId="main-content" type="overlay">
       <IonHeader>
         <IonToolbar color="primary">
+          <IonMenuToggle slot="end" autoHide={false}>
+            <IonButton fill="clear" color="light">
+              <IonIcon icon={arrowBackOutline} />
+            </IonButton>
+          </IonMenuToggle>
           <IonTitle>
             <div className="sidebar-header">
               <img src="/assets/logos/snsu-logo-white.png" alt="SNSU" className="sidebar-logo" />
@@ -119,11 +117,11 @@ const Sidebar: React.FC = () => {
           <IonAvatar className="profile-avatar" key={user?.profilePicture || 'no-picture'}>
             {user?.profilePicture ? (
               <>
-                <img 
-                  src={user.profilePicture.startsWith('http') 
-                    ? user.profilePicture 
+                <img
+                  src={user.profilePicture.startsWith('http')
+                    ? user.profilePicture
                     : `http://localhost:5000/${user.profilePicture}`
-                  } 
+                  }
                   alt="Profile"
                   style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e: any) => {
@@ -143,16 +141,16 @@ const Sidebar: React.FC = () => {
                     }
                   }}
                 />
-                <div 
-                  className="avatar-placeholder" 
+                <div
+                  className="avatar-placeholder"
                   style={{ display: 'none' }}
                 >
                   {user?.username?.[0]?.toUpperCase() || 'U'}
                 </div>
               </>
             ) : (
-              <div 
-                className="avatar-placeholder" 
+              <div
+                className="avatar-placeholder"
                 style={{ display: 'flex' }}
               >
                 {user?.username?.[0]?.toUpperCase() || 'U'}
