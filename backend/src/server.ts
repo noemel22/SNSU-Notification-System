@@ -39,7 +39,8 @@ const io = new SocketIOServer(httpServer, {
 });
 
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' }
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  contentSecurityPolicy: false
 }));
 app.use(morgan('dev'));
 app.use(cors({
