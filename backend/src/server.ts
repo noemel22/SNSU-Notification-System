@@ -128,7 +128,7 @@ const PORT = process.env.PORT || 5000;
 
 initializeDatabase().then((success) => {
   if (success) {
-    httpServer.listen(PORT, () => {
+    httpServer.listen(PORT as number, '0.0.0.0', () => {
       console.log(`Server is running on port ${PORT}`);
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`Database: ${process.env.DB_TYPE || 'sqlite'}`);
