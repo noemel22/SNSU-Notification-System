@@ -31,6 +31,7 @@ import {
 } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getMediaUrl } from '../services/api';
 import './Sidebar.css';
 
 const Sidebar: React.FC = () => {
@@ -118,10 +119,7 @@ const Sidebar: React.FC = () => {
             {user?.profilePicture ? (
               <>
                 <img
-                  src={user.profilePicture.startsWith('http')
-                    ? user.profilePicture
-                    : `http://localhost:5000/${user.profilePicture}`
-                  }
+                  src={getMediaUrl(user.profilePicture)}
                   alt="Profile"
                   style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={(e: any) => {
