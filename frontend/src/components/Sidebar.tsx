@@ -112,7 +112,7 @@ const Sidebar: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent>
+      <IonContent style={{ '--background': '#1a1a2e', '--ion-background-color': '#1a1a2e' } as React.CSSProperties}>
         {/* User Profile Section */}
         <div className="sidebar-profile">
           <IonAvatar className="profile-avatar" key={user?.profilePicture || 'no-picture'}>
