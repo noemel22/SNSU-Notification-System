@@ -196,16 +196,24 @@ ion-label {
     color: #1a1a2e !important;
 }
 
-/* Sidebar items keep white text */
+/* Sidebar items keep white text - HIGH SPECIFICITY to win over global rules */
+ion-menu ion-content ion-list ion-item,
+ion-menu ion-item.nav-item,
 ion-menu ion-item {
+    --background: transparent !important;
     --color: #ffffff !important;
+    color: #ffffff !important;
 }
 
+ion-menu ion-content ion-list ion-item ion-label,
+ion-menu ion-item.nav-item ion-label,
 ion-menu ion-label {
     --color: #ffffff !important;
     color: #ffffff !important;
 }
 
+ion-menu ion-content ion-list ion-item ion-icon,
+ion-menu ion-item.nav-item ion-icon,
 ion-menu ion-icon {
     color: #ffffff !important;
 }
