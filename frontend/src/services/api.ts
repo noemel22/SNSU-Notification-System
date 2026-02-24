@@ -1,19 +1,17 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
-// Base URL for media (without /api suffix)
-export const API_BASE_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 // Build a full URL for a media path like "media/123"
+// Always uses relative paths since frontend and backend share the same origin
 export const getMediaUrl = (mediaPath: string | undefined | null): string => {
   if (!mediaPath) return '';
   // If it's already a full URL, return as-is
   if (mediaPath.startsWith('http')) return mediaPath;
   // New format: media/{id} → /api/media/{id}
-  if (mediaPath.startsWith('media/')) return `${API_BASE_URL}/api/${mediaPath}`;
+  if (mediaPath.startsWith('media/')) return `/api/${mediaPath}`;
   // Legacy format: uploads/profiles/... or profiles/...
-  return `${API_BASE_URL}/${mediaPath}`;
+  return `/${mediaPath}`;
 };
 
 const api = axios.create({
