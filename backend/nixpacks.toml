@@ -9,7 +9,7 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "cd frontend && npm run build",
+  "cd frontend && VITE_API_URL=/api VITE_SOCKET_URL=/ npm run build",
   "cd backend && npm run build"
 ]
 
