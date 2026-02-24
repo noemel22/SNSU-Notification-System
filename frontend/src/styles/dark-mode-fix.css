@@ -22,10 +22,14 @@ ion-content.register-page {
     --ion-background-color: transparent !important;
 }
 
-/* Sidebar keeps dark background */
+/* Sidebar keeps dark background - override ALL Ionic CSS variables */
+ion-menu,
 ion-menu ion-content {
     --background: #1a1a2e !important;
     --ion-background-color: #1a1a2e !important;
+    --ion-item-background: transparent !important;
+    --ion-text-color: #ffffff !important;
+    --ion-card-background: transparent !important;
 }
 
 /* Force Ionic to use light mode colors */
