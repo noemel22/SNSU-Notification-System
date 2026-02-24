@@ -590,7 +590,7 @@ const Messages: React.FC = () => {
                 >
                   <IonAvatar className="mention-avatar">
                     {u.profilePicture ? (
-                      <img src={u.profilePicture.startsWith('http') ? u.profilePicture : `http://localhost:5000/${u.profilePicture}`} alt={u.username} />
+                      <img src={getMediaUrl(u.profilePicture)} alt={u.username} />
                     ) : (
                       <div className="avatar-placeholder-small">{u.username[0].toUpperCase()}</div>
                     )}

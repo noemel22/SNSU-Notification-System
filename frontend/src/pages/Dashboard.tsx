@@ -396,7 +396,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         {notif.thumbnailPath && (
                           <img
-                            src={`http://localhost:5000/uploads/${notif.thumbnailPath}`}
+                            src={getMediaUrl(notif.thumbnailPath)}
                             alt={notif.title}
                             className="notification-thumbnail"
                           />
